@@ -1,0 +1,25 @@
+body {
+  padding: 16px;
+  background-color: rgb(46, 46, 46);
+  color: white;
+  font-family: 'Arial', Courier, monospace;
+  font-size: 16px;
+}
+button {
+  background-color: none;
+}
+
+#trash {
+  transform: translateY(105%);
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

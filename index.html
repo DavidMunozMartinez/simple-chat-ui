@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lucaburgio/iconoir@main/css/iconoir.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <div id="chat-info">
+      <span class="chatting-with">
+        <span> Sending to id: </span>
+        <input
+          id="chatting-with"
+          :value="this.sendTo"
+          :oninput="this.sendTo = event.target.value" />
+      </span>
+      <span class="chat-id">
+        <span> Your chat id: ${this.id} </span>
+      </span>
+    </div>
+
+    <div id="chat-ui" :onscroll="this.CheckIfInView()"></div>
+
+    <div id="chat-input">
+      <input
+        type="text"
+        id="message-input"
+        autofocus
+        placeholder="Send a message..."
+        :onkeydown="this.onInputKeydown(event)"
+        :value="this.inputValue"
+        :oninput="this.inputValue = event.target.value"
+        />
+      <button id="send-button" :onclick="this.submitMessage()"><i class="iconoir-send"></i></button>
+    </div>
+
+    <div id="trash"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

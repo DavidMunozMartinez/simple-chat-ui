@@ -1,0 +1,31 @@
+button {
+  border-radius: 15px;
+  margin: 10px;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#chat-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  background-color: black;
+  input {
+    background: gray;
+    border: 1px solid black;
+    outline: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin: 10px;
+    flex: 6;
+  }
+  button {
+    flex: 2;
+  }
+}
