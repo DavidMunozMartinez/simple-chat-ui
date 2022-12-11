@@ -4,21 +4,100 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lucaburgio/iconoir@main/css/iconoir.css">
-
+    <link rel="stylesheet" href="./src/style.scss">
+    <link rel="stylesheet" href="./src/login-view/login-view.scss">
+    <link rel="stylesheet" href="./src/chat-upper-bar/chat-upper-bar.scss">
+    <link rel="stylesheet" href="./src/chat-messages-list/chat-messages-list.scss">
+    <link rel="stylesheet" href="./src/chat-input/chat-input.scss">
+    <link rel="stylesheet" href="./src/chat-contacts/chat-contacts.scss">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
   </head>
   <body>
-    <div id="chat-info">
-      <span class="chatting-with">
-        <span> Sending to id: </span>
-        <input
-          id="chatting-with"
-          :value="this.sendTo"
-          :oninput="this.sendTo = event.target.value" />
+
+    <div id="login-view" :if="!this.activeSession">
+      <div class="form-container">
+        <div class="tab-headers">
+          <div 
+          class="header"
+          :foreach="header in this.tabHeaders"
+          :class:active="this.activeHeader === header"
+          :onclick="this.activeHeader = header">
+          ${header}
+          </div>
+        </div>
+
+        <div class="tab-content">
+          <div :if="this.activeHeader === 'Login'">
+
+            <label for="email">Email: </label>
+            <input type="email"
+              :onkeydown="this.loginKeyListener(event)"
+              :oninput="this.email = event.target.value">
+
+            <label for="password">
+              <span>Password: </span>
+              <i
+                :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
+                :onclick="this.showPassword = !this.showPassword">
+              </i>
+            </label>
+            <input
+              :type="this.showPassword ? 'text' : 'password' "
+              :onkeydown="this.loginKeyListener(event)"
+              :oninput="this.password = event.target.value">
+
+            <button :onclick="this.login()">Login</button>
+          </div>
+          <div :if="this.activeHeader === 'Sign in'">
+            <label for="email">Email: </label>
+            <input
+              type="email"
+              :onkeydown="this.signinKeyListener(event)"
+              :oninput="this.email = event.target.value">
+
+            <label for="password">
+              Password:
+                <i
+                :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
+                style="display: inline-block;"
+                :onclick="this.showPassword = !this.showPassword">
+              </i>
+            </label>
+            <input
+              :type="this.showPassword ? 'text' : 'password' "
+              :onkeydown="this.signinKeyListener(event)"
+              :oninput="this.password = event.target.value">
+
+
+            <label for="re-passwor">
+              Repeat Password:
+              <i
+              :class="'iconoir-eye-' + (this.showRepeatPassword ? 'empty' : 'off')"
+              :onclick="this.showRepeatPassword = !this.showRepeatPassword">
+            </i>
+            </label>
+            <input
+              :type="this.showRepeatPassword ? 'text' : 'password' "
+              :onkeydown="this.signinKeyListener(event)"
+              :oninput="this.repeatPassword = event.target.value">
+
+
+            <button :onclick="this.signin()">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="chat-upper-bar">
+      <span class="chat-list">
+        <i class="iconoir-multi-bubble"></i>
       </span>
-      <span class="chat-id">
-        <span> Your chat id: ${this.id} </span>
+      <span class="user-email">
+        <span>
+          ${this.email}  
+        </span>
+        <i class="iconoir-log-out" :onclick="this.logout()"></i>
       </span>
     </div>
 
@@ -35,6 +114,29 @@
         :oninput="this.inputValue = event.target.value"
         />
       <button id="send-button" :onclick="this.submitMessage()"><i class="iconoir-send"></i></button>
+    </div>
+
+    <div id="chat-contacts">
+      <div class="search">
+        <i class="iconoir-search"></i>
+        <input type="text" placeholder="Search frens..."
+          :oninput="this.onSearchInput(event)"
+          :onkeydown="this.onSearchInput(event)">
+        <div class="search-results" :if="this.searchResults.length">
+          <div :foreach="result in this.searchResults" class="result">
+            ${result.email}
+          </div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div :foreach="contact in this.contacts" class="contact">
+          <div class="avatar">
+          </div>
+          <div>
+            ${contact.email}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="trash"></div>

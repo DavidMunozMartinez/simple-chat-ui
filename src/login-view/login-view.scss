@@ -1,0 +1,89 @@
+#login-view {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background: rgb(46 46 46);
+
+  .form-container {
+    // height: 500px;
+    width: 300px;
+    // border: 1px solid black;
+    border-radius: 5px;
+    position: relative;
+    box-sizing: border-box;
+
+    .tab-headers {
+      .header {
+        padding: 8px 16px;
+        border-radius: 5px 5px 0px 0px;
+        box-sizing: border-box;
+        display: inline-block;
+        border-bottom: none;
+        margin-bottom: -1px;
+        background-color: rgb(46 46 46);
+        border: 1px solid transparent;
+        border-bottom: none;
+      }
+      .header.active {
+        border: 1px solid black;
+        border-bottom: none;
+        background-color: #444444;
+      }
+    }
+    .tab-content {
+      // border-radius: 5px 5px 5px 5px;
+      border: 1px solid black;
+      padding: 8px 26px;
+      background-color: #444444;
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 32px;
+        label {
+          width: 100%;
+          margin-bottom: 4px;
+          margin-left: 8px;
+          position: relative;
+          i {
+            display: inline-block;
+            font-size: 20px;
+            position: absolute;
+            right: 16px;
+            top: 30px;
+          }
+        }
+  
+        input {
+          margin-bottom: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background-color: gray;
+          outline: none;
+          border: none;
+          padding: 2px 4px;
+        }
+        input[type="password"] {
+          padding-right: 40px;
+        }
+
+        button {
+          height: 30px;
+          width: 100px;
+          border-radius: 8px;
+          border: none;
+          outline: none;
+        }
+      }
+
+    }
+  }
+}
+

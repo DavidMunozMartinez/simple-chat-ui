@@ -9,6 +9,13 @@ button {
   background-color: none;
 }
 
+#chat-upper-bar,
+#chat-ui,
+#chat-input {
+  width: calc(100% - 400px);
+  right: 0;
+}
+
 #trash {
   transform: translateY(105%);
 }
