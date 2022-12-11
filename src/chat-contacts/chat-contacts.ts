@@ -8,6 +8,7 @@ export const ChatContacts = (() => {
     bind: {
       onSearchInput: onSearchInput,
       loadContacts: loadContacts,
+      activeChat: null,
       searchTerm: '',
       contacts: [],
       searchResults: [],

@@ -129,11 +129,19 @@
         </div>
       </div>
       <div class="contact-list">
-        <div :foreach="contact in this.contacts" class="contact">
+        <div 
+          class="contact"
+          :foreach="contact in this.contacts"
+          :onclick="this.activeChat = contact.id"
+          :class:active="this.activeChat === contact.id">
           <div class="avatar">
+            <img :if="contact.img" :src="contact.img" alt="">
+            <span :else><i class="iconoir-user"></i></span>
           </div>
-          <div>
-            ${contact.email}
+
+          <div class="display-text">
+            <div :if="contact.name">${contact.name}</div>
+            <div :else>${contact.email}</div>
           </div>
         </div>
       </div>

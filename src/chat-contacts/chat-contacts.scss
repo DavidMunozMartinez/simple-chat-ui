@@ -55,10 +55,37 @@
   .contact-list {
     .contact {
       padding: 16px 32px;
-      background: #393939;
+      background: #282828;
       border-bottom: 1px solid black;
       height: 40px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      .avatar {
+        height: 50px;
+        width: 50px;
+        position: relative;
+        margin-right: 16px;
+        span {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          border-radius: 50%;
+          background-color: rgb(49, 49, 49);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          i {
+            font-size: 32px;
+          }
+        }
+      }
+      .display-text {
+
+      }
+    }
+    .contact.active {
+      background-color: rgb(46, 46, 46);
     }
   }
 }
