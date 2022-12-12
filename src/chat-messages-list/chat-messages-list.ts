@@ -89,6 +89,7 @@ export function appendMessage(message: string, from?: string) {
   ChatMessagesListRef.insertBefore(el, ChatMessagesListRef.firstChild);
   window.requestAnimationFrame(() => {
     el.style.height = height + "px";
+    ChatMessagesListRef.scrollTop = 0;
   });
 }
 
