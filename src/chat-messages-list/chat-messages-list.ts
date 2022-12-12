@@ -87,9 +87,9 @@ export function appendMessage(message: string, from?: string) {
   el.style.height = "0px";
   if (!ChatMessagesListRef) return;
   ChatMessagesListRef.insertBefore(el, ChatMessagesListRef.firstChild);
-  window.requestAnimationFrame(() => {
-    el.style.height = height + "px";
+  setTimeout(() => {
     ChatMessagesListRef.scrollTop = 0;
+    el.style.height = height + "px";
   });
 }
 
