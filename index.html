@@ -90,12 +90,13 @@
     </div>
 
     <div id="chat-upper-bar">
-      <span class="chat-list">
+      <span class="active-chat">
         <i class="iconoir-multi-bubble"></i>
+        <span>${this.activeChatName}</span>
       </span>
       <span class="user-email">
         <span>
-          ${this.email}  
+          <!-- ${this.email}   -->
         </span>
         <i class="iconoir-log-out" :onclick="this.logout()"></i>
       </span>
@@ -112,6 +113,7 @@
         :onkeydown="this.onInputKeydown(event)"
         :value="this.inputValue"
         :oninput="this.inputValue = event.target.value"
+        :class:disabled="this.enabled"
         />
       <button id="send-button" :onclick="this.submitMessage()"><i class="iconoir-send"></i></button>
     </div>
@@ -123,7 +125,10 @@
           :oninput="this.onSearchInput(event)"
           :onkeydown="this.onSearchInput(event)">
         <div class="search-results" :if="this.searchResults.length">
-          <div :foreach="result in this.searchResults" class="result">
+          <div
+            class="result"
+            :foreach="result in this.searchResults"
+            :onclick="this.addUserContact(result)">
             ${result.email}
           </div>
         </div>
@@ -132,8 +137,8 @@
         <div 
           class="contact"
           :foreach="contact in this.contacts"
-          :onclick="this.activeChat = contact.id"
-          :class:active="this.activeChat === contact.id">
+          :onclick="this.selectChat(contact)"
+          :class:active="this.activeChat === contact._id">
           <div class="avatar">
             <img :if="contact.img" :src="contact.img" alt="">
             <span :else><i class="iconoir-user"></i></span>

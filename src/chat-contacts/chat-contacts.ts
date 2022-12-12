@@ -1,6 +1,7 @@
 import { Bind } from "bindrjs"
+import { ChatMessagesList, MessageLists } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { getUserContacts, queryGlobalContacts } from "../utils/server-handler";
+import { addContact, getUserContacts, queryGlobalContacts } from "../utils/server-handler";
 
 export const ChatContacts = (() => {
   const { bind } = new Bind({
@@ -8,6 +9,8 @@ export const ChatContacts = (() => {
     bind: {
       onSearchInput: onSearchInput,
       loadContacts: loadContacts,
+      addUserContact: addUserContact,
+      selectChat: selectChat,
       activeChat: null,
       searchTerm: '',
       contacts: [],
@@ -32,15 +35,33 @@ export const ChatContacts = (() => {
     }
   }
 
+  function addUserContact(contact: any) {
+    let id = ChatUpperBar._id;
+    addContact(id, contact._id).then((contacts: never[]) => {
+      bind.contacts = contacts;
+      bind.searchResults = [];
+    });
+  }
+
   function loadContacts() {
     let user = {
+      _id: ChatUpperBar._id,
       email: ChatUpperBar.email,
-      id: ChatUpperBar.id,
     };
 
-    getUserContacts(user).then((contacts) => {
-      bind.contacts = contacts;
-      console.log(contacts);
+    getUserContacts(user).then((contacts: never[]) => {
+      if (contacts && contacts.length) {
+        bind.contacts = contacts;
+        selectChat(contacts[0]);
+      }
     });
+  }
+
+  function selectChat(contact: any) {
+    if (bind.activeChat !== contact._id) {
+      bind.activeChat = contact._id;
+      (ChatMessagesList.loadMessages as any)(contact._id);
+      ChatUpperBar.activeChatName = contact.name ? contact.name : contact.email
+    }
   }
 })();

@@ -1,15 +1,20 @@
 import { Bind } from "bindrjs";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
+import { getMessagesBetweenUsers } from "../utils/server-handler";
 import "./chat-messages-list.scss";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
+
+export const MessageLists: {[key: string]: any[]} = {};
 
 export const ChatMessagesList = (() => {
   const { bind } = new Bind({
     id: "chat-ui",
     bind: {
       CheckIfInView,
+      loadMessages,
+      activeChatId: '',
     },
   });
 
@@ -36,6 +41,24 @@ export const ChatMessagesList = (() => {
     });
   }
 
+  function loadMessages(you: string) {
+    if (!MessageLists[you]) {
+      getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
+        MessageLists[you] = messages;
+        messages.forEach((message: any) => {
+          let from = message.from === you ? you : undefined;
+          appendMessage(message.message, from);
+        });
+      });
+    } else if (ChatMessagesListRef) {
+      ChatMessagesListRef.innerHTML = ''
+      MessageLists[you].forEach((message) => {
+        let from = message.from === you ? you : undefined;
+        appendMessage(message.message, from);
+      });
+    }
+  }
+
   return bind;
 })();
 
@@ -49,16 +72,12 @@ export function appendMessage(message: string, from?: string) {
   let prefix = "";
   let options = "";
   if (from) {
-    prefix = `<p style="float: left; padding: 10px 0"> ${from}: </p>`;
     options = `
         <div class="options">
           <span><i class="iconoir-reply"></i></span>
         </div>
       `;
   }
-  el.onclick = () => {
-    if (from) ChatUpperBar.sendTo = from;
-  };
   el.innerHTML = `
       ${prefix}
       <p class="${!from ? "sent" : "received"}">${message}</p>
@@ -68,7 +87,7 @@ export function appendMessage(message: string, from?: string) {
   el.style.height = "0px";
   if (!ChatMessagesListRef) return;
   ChatMessagesListRef.insertBefore(el, ChatMessagesListRef.firstChild);
-  setTimeout(() => {
+  window.requestAnimationFrame(() => {
     el.style.height = height + "px";
   });
 }

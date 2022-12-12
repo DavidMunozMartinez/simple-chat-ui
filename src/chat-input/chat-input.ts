@@ -1,7 +1,8 @@
 import { Bind } from "bindrjs";
+import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { appendMessage } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { sendMessage } from "../utils/ws-handler";
+import { sendMessage } from "../utils/server-handler";
 import './chat-input.scss';
 
 export const ChatInput = (() => {
@@ -10,6 +11,7 @@ export const ChatInput = (() => {
   const { bind } = new Bind({
     id: 'chat-input',
     bind: {
+      enabled: true,
       inputValue: '',
       onInputKeydown,
       submitMessage,
@@ -23,11 +25,16 @@ export const ChatInput = (() => {
   }
 
   function submitMessage() {
-    if (bind.inputValue.trim()) {
-      sendMessage(bind.inputValue, ChatUpperBar.sendTo);
-      appendMessage(bind.inputValue);
-      bind.inputValue = '';
-      if (MessageInput) MessageInput.value = ''
+    if (bind.inputValue.trim() && ChatContacts.activeChat && ChatContacts.activeChat.trim()) {
+      sendMessage(
+        ChatUpperBar._id,
+        ChatContacts.activeChat,
+        bind.inputValue
+      ).then(() => {
+        appendMessage(bind.inputValue);
+        bind.inputValue = '';
+        if (MessageInput) MessageInput.value = ''
+      })
     }
   }
 

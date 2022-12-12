@@ -1,8 +1,6 @@
 #chat-upper-bar {
   position: fixed;
   top: 0;
-  // left: 0;
-  // width: 100%;
   height: 60px;
   background-color: black;
   display: flex;
@@ -15,17 +13,21 @@
     display: inline-block;
   }
 
-  .chat-list {
-    flex: 1;
-  }
+  .active-chat,
   .user-email {
     flex: 1;
-    justify-content: right;
     display: flex;
     align-items: center;
-    span {
-      margin-left: 10px
+  }
+  
+  .active-chat {
+    justify-content: left;
+    i {
+      margin-right: 10px;
     }
+  }
+  .user-email {
+    justify-content: right;
     i {
       margin-left: 10px;
     }

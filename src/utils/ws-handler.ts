@@ -1,34 +1,21 @@
 import { appendMessage } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
-export const uniqueId = Math.random().toString(16).slice(2);
-
-export let ws: WebSocket;
-
-export function initWebSockets() {
+export function initWebSockets(_id: string) {
+  let ws;
   let wss = "wss";
   if (IS_LOCAL) {
     wss = "ws";
   }
   ws = new WebSocket(
-    wss + "://" + SERVER + "/ws?id=" + uniqueId
+    `${wss}://${SERVER}/ws?id=${_id}`
   );
 
   ws.addEventListener('message', (event) => {
-    const { message, id } = JSON.parse(event.data);
-    appendMessage(message, id);
+    const { message, from } = JSON.parse(event.data);
+    
+    appendMessage(message, from);
   });
 
   return ws;
-}
-
-export function sendMessage(message: string, to: string) {
-  ws.send(
-    JSON.stringify({
-      id: uniqueId, /**From */
-      to,
-      message,
-      timestamp: new Date().getTime(),
-    })
-  );
 }
