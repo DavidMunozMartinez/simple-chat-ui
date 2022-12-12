@@ -68,7 +68,8 @@ export const ChatContacts = (() => {
     if (bind.activeChat !== contact._id) {
       bind.activeChat = contact._id;
       (ChatMessagesList.loadMessages as any)(contact._id);
-      ChatUpperBar.activeChatName = contact.name ? contact.name : contact.email
+      ChatUpperBar.activeChatName = contact.name ? contact.name : contact.email;
+      ChatContacts.hideContacts = true;
     }
   }
 })();
