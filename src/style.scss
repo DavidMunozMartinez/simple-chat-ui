@@ -3,7 +3,9 @@ body {
   background-color: rgb(46, 46, 46);
   color: white;
   font-family: 'Arial', Courier, monospace;
-  font-size: 16px;
+  * {
+    font-size: 16px;
+  }
 }
 button {
   background-color: none;
