@@ -86,10 +86,17 @@ export function appendMessage(message: string, from?: string) {
   let height = getAnimationEndHeight(el);
   el.style.height = "0px";
   if (!ChatMessagesListRef) return;
+  ChatMessagesListRef.style.overflowY = 'hidden'
   ChatMessagesListRef.insertBefore(el, ChatMessagesListRef.firstChild);
+  ChatMessagesListRef.scrollTop = 1;
+  console.log(ChatMessagesListRef.scrollHeight, ChatMessagesListRef.scrollTop);
   setTimeout(() => {
-    ChatMessagesListRef.scrollTop = 0;
     el.style.height = height + "px";
+    setTimeout(() => {
+      el.style.height = 'auto';
+      ChatMessagesListRef.scrollTop = 0;
+      ChatMessagesListRef.style.overflowY = 'scroll'
+    },200);
   });
 }
 
