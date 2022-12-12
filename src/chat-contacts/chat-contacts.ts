@@ -1,5 +1,5 @@
 import { Bind } from "bindrjs"
-import { ChatMessagesList, MessageLists } from "../chat-messages-list/chat-messages-list";
+import { ChatMessagesList } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { addContact, getUserContacts, queryGlobalContacts } from "../utils/server-handler";
 
