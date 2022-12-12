@@ -15,8 +15,13 @@ export const ChatInput = (() => {
       inputValue: '',
       onInputKeydown,
       submitMessage,
+      toggleContactList
     }
   });
+
+  function toggleContactList() {
+    ChatContacts.hideContacts = !ChatContacts.hideContacts;
+  }
 
   function onInputKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter') {

@@ -10,9 +10,7 @@ button {
 #chat-input {
   position: fixed;
   bottom: 0;
-  // left: 0;
   height: 60px;
-  // width: 100%;
   display: flex;
   background-color: black;
   input {
@@ -23,9 +21,13 @@ button {
     padding: 10px 15px;
     border-radius: 15px;
     margin: 10px;
-    flex: 6;
+    flex: 8;
   }
   button {
     flex: 2;
+  }
+
+  .toggle-contacts {
+    display: none;
   }
 }

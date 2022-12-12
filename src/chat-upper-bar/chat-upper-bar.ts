@@ -10,8 +10,13 @@ export const ChatUpperBar = (() => {
       activeChatName: '',
       email: '',
       logout,
+      toggleContacts,
     }
   });
+
+  function toggleContacts() {
+
+  }
 
   function logout() {
     (LoginBind.logout as any)().then(() => {

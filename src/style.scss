@@ -20,6 +20,34 @@ button {
   transform: translateY(105%);
 }
 
+@media only screen and (max-width: 600px)  {
+  #chat-upper-bar,
+  #chat-ui,
+  #chat-input {
+    width: 100%;
+    right: 0;
+  }
+
+  #chat-input {
+    .toggle-contacts {
+      display: flex !important;
+    }
+  }
+
+  #chat-contacts {
+    width: 100% !important;
+    .bottom-nav {
+      span {
+        display: block !important;
+      }
+    }
+  }
+
+  #chat-contacts.hide {
+    transform: translateX(-100%);
+  }
+}
+
 @keyframes appear {
   0% {
     opacity: 0.6;

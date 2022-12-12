@@ -91,13 +91,13 @@
 
     <div id="chat-upper-bar">
       <span class="active-chat">
-        <i class="iconoir-multi-bubble"></i>
+        <i 
+          class="iconoir-user"
+          :onclick="this.hideContacts = !this.hideContacts">
+        </i>
         <span>${this.activeChatName}</span>
       </span>
       <span class="user-email">
-        <span>
-          <!-- ${this.email}   -->
-        </span>
         <i class="iconoir-log-out" :onclick="this.logout()"></i>
       </span>
     </div>
@@ -105,6 +105,12 @@
     <div id="chat-ui" :onscroll="this.CheckIfInView()"></div>
 
     <div id="chat-input">
+      <button class="toggle-contacts" :onclick="this.toggleContactList()">
+        <i 
+        class="iconoir-multi-bubble"
+        :onclick="this.hideContacts = !this.hideContacts">
+        </i>
+      </button>
       <input
         type="text"
         id="message-input"
@@ -118,7 +124,7 @@
       <button id="send-button" :onclick="this.submitMessage()"><i class="iconoir-send"></i></button>
     </div>
 
-    <div id="chat-contacts">
+    <div id="chat-contacts" :class:hide="this.hideContacts">
       <div class="search">
         <i class="iconoir-search"></i>
         <input type="text" placeholder="Search frens..."
@@ -133,6 +139,7 @@
           </div>
         </div>
       </div>
+
       <div class="contact-list">
         <div 
           class="contact"
@@ -150,6 +157,13 @@
           </div>
         </div>
       </div>
+
+      <div class="bottom-nav">
+        <span :onclick="this.hideContacts = true">
+          <i class="iconoir-nav-arrow-left"></i>
+        </span>
+      </div>
+
     </div>
 
     <div id="trash"></div>

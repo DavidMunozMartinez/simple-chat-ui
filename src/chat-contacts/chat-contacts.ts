@@ -15,6 +15,7 @@ export const ChatContacts = (() => {
       searchTerm: '',
       contacts: [],
       searchResults: [],
+      hideContacts: true,
     },
   });
   return bind;
@@ -37,9 +38,15 @@ export const ChatContacts = (() => {
 
   function addUserContact(contact: any) {
     let id = ChatUpperBar._id;
-    addContact(id, contact._id).then((contacts: never[]) => {
-      bind.contacts = contacts;
-      bind.searchResults = [];
+    addContact(id, contact._id).then(() => {
+      getUserContacts({
+        _id: ChatUpperBar._id,
+        email: ChatUpperBar.email
+      }).then((contacts: never[]) => {
+        bind.contacts = contacts;
+        bind.searchResults = [];
+        selectChat(contact);
+      });
     });
   }
 
