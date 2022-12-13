@@ -8,6 +8,8 @@ const Trash = document.getElementById("chat-ui");
 
 export const MessageLists: {[key: string]: any[]} = {};
 
+const TimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' })
+
 export const ChatMessagesList = (() => {
   const { bind } = new Bind({
     id: "chat-ui",
@@ -47,7 +49,7 @@ export const ChatMessagesList = (() => {
         MessageLists[you] = messages;
         messages.forEach((message: any) => {
           let from = message.from === you ? you : undefined;
-          appendMessage(message.message, from);
+          appendMessage(message.message, from, new Date(message.createdAt));
         });
       });
     } else {
@@ -64,11 +66,10 @@ export const ChatMessagesList = (() => {
 /**
  * We use native methods here to have more control over the animations and transition
  */
-export function appendMessage(message: string, from?: string) {
+export function appendMessage(message: string, from?: string, dateTime?: Date) {
   let el = document.createElement("div");
   el.classList.add("message-container");
   el.classList.add(!from ? "sent" : "received");
-  let prefix = "";
   let options = "";
   if (from) {
     options = `
@@ -78,8 +79,8 @@ export function appendMessage(message: string, from?: string) {
       `;
   }
   el.innerHTML = `
-      ${prefix}
-      <p class="${!from ? "sent" : "received"}">${message}</p>
+      <p class="timestamp"> ${TimeFormatter.format(dateTime)} </p>
+      <p class="${!from ? "sent" : "received"}">${message} </p>
       ${options}
       `;
   let height = getAnimationEndHeight(el);
@@ -87,8 +88,6 @@ export function appendMessage(message: string, from?: string) {
   if (!ChatMessagesListRef) return;
   ChatMessagesListRef.style.overflowY = 'hidden'
   ChatMessagesListRef.insertBefore(el, ChatMessagesListRef.firstChild);
-  ChatMessagesListRef.scrollTop = 1;
-  console.log(ChatMessagesListRef.scrollHeight, ChatMessagesListRef.scrollTop);
   setTimeout(() => {
     el.style.height = height + "px";
     setTimeout(() => {

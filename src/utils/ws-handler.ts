@@ -3,7 +3,7 @@ import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
-  let ws;
+  let ws: WebSocket;
   let wss = "wss";
   if (IS_LOCAL) {
     wss = "ws";
@@ -20,6 +20,12 @@ export function initWebSockets(_id: string) {
     }
     MessageLists[from].push(JSON.parse(event.data))
   });
+
+  window.onfocus = () => {
+    if (ws.readyState === WebSocket.CLOSED) {
+      alert('Connection lost, refresh page')
+    }
+  }
 
   return ws;
 }

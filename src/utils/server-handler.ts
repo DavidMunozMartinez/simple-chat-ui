@@ -117,7 +117,8 @@ export function sendMessage(from: string, to: string, message: string) {
     body: JSON.stringify({
       from,
       to,
-      message
+      message,
+      createdAt: new Date()
     })
   };
   
