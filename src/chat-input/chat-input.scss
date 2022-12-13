@@ -1,20 +1,12 @@
-button {
-  border-radius: 15px;
-  margin: 10px;
-  background-color: gray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 #chat-input {
   position: fixed;
   bottom: 0;
   height: 60px;
   display: flex;
-  background-color: black;
+  background-color: #222222;
+  box-sizing: border-box;
   input {
-    background: gray;
+    background: #191919;
     border: 1px solid black;
     outline: none;
     color: white;
@@ -22,9 +14,20 @@ button {
     border-radius: 15px;
     margin: 10px;
     flex: 8;
+    border: none;
   }
   button {
-    flex: 2;
+    border-radius: 15px;
+    width: 50px;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #17895c;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
   }
 
   .toggle-contacts {

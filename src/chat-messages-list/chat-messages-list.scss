@@ -13,6 +13,7 @@
   
   box-sizing: border-box;
   overflow-y: scroll;
+
 }
 
 #chat-ui {
@@ -102,6 +103,9 @@
   }
 
   .message-container:hover {
+    p {
+      transform: scale(1.09);
+    }
     .options {
       span {
         transform: translateX(0);

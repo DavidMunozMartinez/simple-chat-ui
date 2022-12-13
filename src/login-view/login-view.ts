@@ -2,6 +2,7 @@ import { createClient, User, UserResponse } from "@supabase/supabase-js";
 import { Bind } from "bindrjs"
 import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
+import { SpashScreen } from "../splash-screen/spash-screen";
 import { SUPABASE_URL, SUPABASE_KEY } from "../utils/constants";
 import { getUserId, serverSignIn } from "../utils/server-handler";
 import { initWebSockets } from "../utils/ws-handler";
@@ -28,13 +29,19 @@ export const LoginBind = (() => {
       logout,
     },
     ready: () => {
-      supabase.auth.getUser().then((value: UserResponse) => {
-        if (value.data && value.data.user && value.data.user.id) {
-          getUserId(value.data.user.id).then(({ _id }) => {
-            assignUserToApp(_id, value.data.user as User);
-          })
-        }
-      });
+      supabase.auth.getUser()
+        .then((value: UserResponse) => {
+          if (value.data && value.data.user && value.data.user.id) {
+            getUserId(value.data.user.id).then(({ _id }) => {
+              assignUserToApp(_id, value.data.user as User);
+            })
+          } else {
+            SpashScreen.loading = false;
+          }
+        })
+        .catch(() => {
+          SpashScreen.loading = false;
+        })
     }
   });
 

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./src/chat-messages-list/chat-messages-list.scss">
     <link rel="stylesheet" href="./src/chat-input/chat-input.scss">
     <link rel="stylesheet" href="./src/chat-contacts/chat-contacts.scss">
+    <link rel="stylesheet" href="./src/splash-screen/splash-screen.scss">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
   </head>
@@ -164,6 +165,10 @@
         </span>
       </div>
 
+    </div>
+
+    <div id="splash-screen" :class:hide="!this.loading">
+      <div class="lds-facebook"><div></div><div></div><div></div></div>
     </div>
 
     <div id="trash"></div>
