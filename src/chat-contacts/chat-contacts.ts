@@ -23,9 +23,11 @@ export const ChatContacts = (() => {
   function onSearchInput(event: KeyboardEvent) {
     bind.searchTerm = (event.target as HTMLInputElement).value;
     if (event.key === 'Enter' && bind.searchTerm.trim()) {
-      queryGlobalContacts(bind.searchTerm.trim()).then((results) => {
+      queryGlobalContacts(bind.searchTerm.trim()).then((results: never[]) => {
         if (results && (results as any[]).length) {
-          bind.searchResults = results as never[];
+          // Remove yourself
+          let filtered = results.filter((res: any) => res._id != ChatUpperBar._id)
+          bind.searchResults = filtered;
         } else {
           bind.searchResults = [];
         }
@@ -59,7 +61,13 @@ export const ChatContacts = (() => {
     getUserContacts(user).then((contacts: never[]) => {
       if (contacts && contacts.length) {
         bind.contacts = contacts;
-        selectChat(contacts[0]);
+        let lastChatSelected = localStorage.getItem('last-chat-selected');
+        let selectedContact = contacts.find((contact: any) => contact._id === lastChatSelected)
+        if (lastChatSelected && selectedContact) {
+          selectChat(selectedContact);
+        } else {
+          selectChat(contacts[0]);
+        }
       }
     });
   }
@@ -70,6 +78,7 @@ export const ChatContacts = (() => {
       (ChatMessagesList.loadMessages as any)(contact._id);
       ChatUpperBar.activeChatName = contact.name ? contact.name : contact.email;
       ChatContacts.hideContacts = true;
+      localStorage.setItem('last-chat-selected', contact._id)
     }
   }
 })();

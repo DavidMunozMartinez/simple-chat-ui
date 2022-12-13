@@ -14,7 +14,6 @@ export const ChatMessagesList = (() => {
     bind: {
       CheckIfInView,
       loadMessages,
-      activeChatId: '',
     },
   });
 
@@ -42,6 +41,7 @@ export const ChatMessagesList = (() => {
   }
 
   function loadMessages(you: string) {
+    if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = ''
     if (!MessageLists[you]) {
       getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
         MessageLists[you] = messages;
@@ -50,8 +50,7 @@ export const ChatMessagesList = (() => {
           appendMessage(message.message, from);
         });
       });
-    } else if (ChatMessagesListRef) {
-      ChatMessagesListRef.innerHTML = ''
+    } else {
       MessageLists[you].forEach((message) => {
         let from = message.from === you ? you : undefined;
         appendMessage(message.message, from);

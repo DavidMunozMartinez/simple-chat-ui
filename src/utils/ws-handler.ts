@@ -1,4 +1,5 @@
-import { appendMessage } from "../chat-messages-list/chat-messages-list";
+import { ChatContacts } from "../chat-contacts/chat-contacts";
+import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
@@ -14,7 +15,10 @@ export function initWebSockets(_id: string) {
   ws.addEventListener('message', (event) => {
     const { message, from } = JSON.parse(event.data);
     
-    appendMessage(message, from);
+    if (ChatContacts.activeChat === from) {
+      appendMessage(message, from);
+    }
+    MessageLists[from].push(JSON.parse(event.data))
   });
 
   return ws;

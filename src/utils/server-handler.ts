@@ -68,7 +68,7 @@ export function serverSignIn(authId: string, email: string): Promise<string> {
   });
 }
 
-export function queryGlobalContacts(searchTerm: string) {
+export function queryGlobalContacts(searchTerm: string): Promise<never[]> {
   const config: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
