@@ -16,6 +16,7 @@ export const ChatMessagesList = (() => {
     bind: {
       CheckIfInView,
       loadMessages,
+      refreshMessages,
     },
   });
 
@@ -58,6 +59,23 @@ export const ChatMessagesList = (() => {
         appendMessage(message.message, from);
       });
     }
+  }
+
+  /**
+   * Executed only when the app is focused again, we lost ws connection and need to
+   * retrieve missing messages while the tab was closed/minimized etc
+   */
+  function refreshMessages() {
+    let reloadContacts = Object.keys(MessageLists);
+    reloadContacts.forEach((contactId) => {
+      let lastMessageId = MessageLists[contactId][MessageLists[contactId].length - 1]._id;
+      getMessagesBetweenUsers(ChatUpperBar._id, contactId, lastMessageId).then((newMessages) => {
+        MessageLists[contactId] = MessageLists[contactId].concat(newMessages);
+        newMessages.forEach((message: any) => {
+          appendMessage(message.message, contactId, new Date(message.createdAt));
+        });
+      });
+    });
   }
 
   return bind;

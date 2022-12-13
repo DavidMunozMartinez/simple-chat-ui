@@ -135,13 +135,15 @@ export function sendMessage(from: string, to: string, message: string) {
   });
 }
 
-export function getMessagesBetweenUsers(me: string, you: string): Promise<never[]> {
+export function getMessagesBetweenUsers(me: string, you: string, index?: string): Promise<never[]> {
+  let data: any = {
+    me,
+    you
+  };
+  if (index) data.index = index;
   const config: RequestInit = {
     method: 'POST',
-    body: JSON.stringify({
-      me,
-      you
-    })
+    body: JSON.stringify(data)
   };
   
   return new Promise((resolve, reject) => {
@@ -152,6 +154,7 @@ export function getMessagesBetweenUsers(me: string, you: string): Promise<never[
         return res.json();
       })
       .then(data => {
+        data = success && data && data.length ? data : []; 
         success ? resolve(data) : reject(data);
       });
   });

@@ -1,5 +1,5 @@
 import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages-list";
+import { appendMessage, ChatMessagesList, MessageLists } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
@@ -14,18 +14,20 @@ export function initWebSockets(_id: string) {
 
   ws.addEventListener('message', (event) => {
     const { message, from } = JSON.parse(event.data);
-    
     if (ChatContacts.activeChat === from) {
       appendMessage(message, from);
     }
     MessageLists[from].push(JSON.parse(event.data))
   });
 
-  window.onfocus = () => {
-    if (ws.readyState === WebSocket.CLOSED) {
-      alert('Connection lost, refresh page')
-    }
-  }
+  ws.onclose = function(e) {
+    setTimeout(function() {
+      initWebSockets(_id);
+      (ChatMessagesList.refreshMessages as any)()
+    });
+  };
+
+  (window as any)['ws'] = ws;
 
   return ws;
 }
