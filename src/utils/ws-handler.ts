@@ -20,7 +20,7 @@ export function initWebSockets(_id: string) {
     MessageLists[from].push(JSON.parse(event.data))
   });
 
-  ws.onclose = function(e) {
+  ws.onclose = () => {
     setTimeout(function() {
       initWebSockets(_id);
       (ChatMessagesList.refreshMessages as any)()
