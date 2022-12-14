@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./src/chat-input/chat-input.scss">
     <link rel="stylesheet" href="./src/chat-contacts/chat-contacts.scss">
     <link rel="stylesheet" href="./src/splash-screen/splash-screen.scss">
+    <link rel="stylesheet" href="./src/app-modal/app-modal.scss">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
   </head>
@@ -103,7 +104,7 @@
       </span>
     </div>
 
-    <div id="chat-ui" :onscroll="this.CheckIfInView()"></div>
+    <div id="chat-ui" tabindex="-1" :onscroll="this.CheckIfInView()"></div>
 
     <div id="chat-input">
       <button class="toggle-contacts" :onclick="this.toggleContactList()">
@@ -134,30 +135,65 @@
         <div class="search-results" :if="this.searchResults.length">
           <div
             class="result"
-            :foreach="result in this.searchResults"
-            :onclick="this.addUserContact(result)">
-            ${result.email}
+            :foreach="result in this.searchResults">
+            <span class="result-text">
+              ${result.email}
+            </span>
+
+            <span class="add-friend" :onclick="this.friendRequest(result)">
+              <i class="iconoir-add-user"></i>
+            </span>
           </div>
         </div>
       </div>
 
-      <div class="contact-list">
-        <div 
-          class="contact"
-          :foreach="contact in this.contacts"
-          :onclick="this.selectChat(contact)"
-          :class:active="this.activeChat === contact._id">
-          <div class="avatar">
-            <img :if="contact.img" :src="contact.img" alt="">
-            <span :else><i class="iconoir-user"></i></span>
-          </div>
+      <div class="contacts-container">
+        <div class="tabs">
+          <span :class:active="this.tab === 'friends'" :onclick="this.tab = 'friends'">Friends</span>
+          <span :class:active="this.tab === 'requests'" :onclick="this.tab = 'requests'">
+            Friend Requests ${this.requests.length ? this.requests.length : ''}
+          </span>
+          <span class="bottom"></span>
+        </div>
 
-          <div class="display-text">
-            <div :if="contact.name">${contact.name}</div>
-            <div :else>${contact.email}</div>
+        <div class="contact-list" :if="this.tab === 'friends'">
+          <div 
+            class="contact"
+            :foreach="contact in this.contacts"
+            :onclick="this.selectChat(contact)"
+            :class:active="this.activeChat === contact._id">
+            <div class="avatar">
+              <img :if="contact.img" :src="contact.img" alt="">
+              <span :else><i class="iconoir-user"></i></span>
+            </div>
+  
+            <div class="display-text">
+              <div :if="contact.name">${contact.name}</div>
+              <div :else>${contact.email}</div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="request-list" :if="this.tab === 'requests'">
+          <div 
+            class="request"
+            :foreach="request in this.requests">
+            <div class="avatar">
+              <img :if="request.img" :src="request.img" alt="">
+              <span :else><i class="iconoir-user"></i></span>
+            </div>
+            <div class="display-text">
+              <div :if="request.name">${request.name}</div>
+              <div :else>${request.email}</div>
+            </div>
+            <div class="actions">
+              <i class="iconoir-check" :onclick="this.acceptRequest(request)"></i>
+              <!-- <i class="iconoir-cancel"></i> -->
+            </div>
           </div>
         </div>
       </div>
+
 
       <div class="bottom-nav">
         <span :onclick="this.hideContacts = true">
@@ -169,6 +205,10 @@
 
     <div id="splash-screen" :class:hide="!this.loading">
       <div class="lds-facebook"><div></div><div></div><div></div></div>
+    </div>
+
+    <div id="app-modal" :if="this.message">
+      ${this.message}
     </div>
 
     <div id="trash"></div>

@@ -1,7 +1,9 @@
 import { Bind } from "bindrjs"
+import { AppModal } from "../app-modal/app-moda";
 import { ChatMessagesList } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { addContact, getUserContacts, queryGlobalContacts } from "../utils/server-handler";
+import { SpashScreen } from "../splash-screen/spash-screen";
+import { acceptFriendRequest, getUserContacts, queryGlobalContacts, sendFriendRequest } from "../utils/server-handler";
 
 export const ChatContacts = (() => {
   const { bind } = new Bind({
@@ -9,13 +11,16 @@ export const ChatContacts = (() => {
     bind: {
       onSearchInput: onSearchInput,
       loadContacts: loadContacts,
-      addUserContact: addUserContact,
+      friendRequest,
+      acceptRequest,
       selectChat: selectChat,
       activeChat: null,
       searchTerm: '',
       contacts: [],
+      requests: [],
       searchResults: [],
       hideContacts: true,
+      tab: 'friends'
     },
   });
   return bind;
@@ -38,37 +43,50 @@ export const ChatContacts = (() => {
     }
   }
 
-  function addUserContact(contact: any) {
-    let id = ChatUpperBar._id;
-    addContact(id, contact._id).then(() => {
-      getUserContacts({
-        _id: ChatUpperBar._id,
-        email: ChatUpperBar.email
-      }).then((contacts: never[]) => {
-        bind.contacts = contacts;
-        bind.searchResults = [];
-        selectChat(contact);
-      });
+  function friendRequest(result: any) {
+    sendFriendRequest(ChatUpperBar._id, result._id).then((data: any) => {
+      if (data.success) {
+        (AppModal.show as any)('Sent a friend request to: ' + result.email);
+      }
     });
   }
 
-  function loadContacts() {
+  function acceptRequest(request: any) {
+    acceptFriendRequest(request._id, ChatUpperBar._id).then((data: any) => {
+      if (data.success) {
+        let index = bind.requests.indexOf(request as never);
+        let contact = bind.requests.splice(index, 1);
+        bind.contacts.push(contact[0]);
+      }
+    });
+  }
+
+  function loadContacts(autoSelectChat?: boolean) {
     let user = {
       _id: ChatUpperBar._id,
       email: ChatUpperBar.email,
     };
 
-    getUserContacts(user).then((contacts: never[]) => {
-      if (contacts && contacts.length) {
-        bind.contacts = contacts;
-        let lastChatSelected = localStorage.getItem('last-chat-selected');
-        let selectedContact = contacts.find((contact: any) => contact._id === lastChatSelected)
-        if (lastChatSelected && selectedContact) {
-          selectChat(selectedContact);
-        } else {
-          selectChat(contacts[0]);
+    getUserContacts(user).then((contactData) => {
+      if (contactData.contacts) {
+        let contacts = contactData.contacts;
+        bind.contacts = contacts as any;
+        if (autoSelectChat) {
+          let lastChatSelected = localStorage.getItem('last-chat-selected');
+          let selectedContact = contacts.find((contact: any) => contact._id === lastChatSelected)
+          if (lastChatSelected && selectedContact) {
+            selectChat(selectedContact);
+          } else {
+            selectChat(contacts[0]);
+          }
         }
       }
+
+      if (contactData.requests) {
+        bind.requests = contactData.requests as any;
+      }
+
+      SpashScreen.loading = false;
     });
   }
 

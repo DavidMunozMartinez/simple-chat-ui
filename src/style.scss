@@ -21,13 +21,15 @@ button {
 
 #trash {
   transform: translateY(105%);
+  pointer-events: none;
+  visibility: hidden;
 }
 
 @media only screen and (max-width: 700px)  {
   #chat-upper-bar,
   #chat-ui,
   #chat-input {
-    width: 100%;
+    width: 100% !important;
     right: 0;
     border-left: none !important;
   }

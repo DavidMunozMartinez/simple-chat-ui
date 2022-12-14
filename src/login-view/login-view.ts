@@ -103,7 +103,7 @@ export const LoginBind = (() => {
     if (user.email) {
       ChatUpperBar.email = user.email
     }
-    (ChatContacts.loadContacts as any)();
+    (ChatContacts.loadContacts as any)(true);
     initWebSockets(_id);
   }
 

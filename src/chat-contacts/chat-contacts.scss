@@ -11,7 +11,7 @@
     padding: 16px 32px;
     position: relative;
     overflow: visible;
-    i {
+    & > i {
       position: absolute;
       right: 40px;
       top: 22px;
@@ -41,24 +41,62 @@
       z-index: 2;
       .result {
         height: 60px;
-        padding: 20px;
+        padding: 0 20px;
         box-sizing: border-box;
         display: flex;
         align-items: center;
         transition: background-color 100ms ease-in-out;
         cursor: pointer;
         z-index: 2;
+        margin: 10px;
+        border: 1px solid #373737;
+        border-radius: 8px;
+        .result-text,
+        .add-friend {
+          flex: 1;
+          display: flex;
+          align-items: center;
+        }
+        .add-friend {
+          justify-content: flex-end;
+          i {
+            font-size: 24px;
+            border: 1px solid #373737;
+            padding: 8px;
+            border-radius: 5px;
+          }
+          i:hover {
+            background-color: #515151;
+          }
+        }
       }
       .result:hover {
-        background-color: #515151;
       }
     }
   }
 
-  .contact-list {
+  .contacts-container {
     height: calc(100% - 135px);
-    .contact {
-      padding: 16px 32px;
+    .tabs {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      box-sizing: border-box;
+      column-gap: 8px;
+      span {
+        transition: border-bottom-color 200ms ease-in-out;
+        margin: 5px;
+        border-bottom: 2px solid transparent;
+        height: 100%;
+        &.active {
+          border-bottom: 2px solid lightgray;
+        }
+      }
+    }
+    .contact,
+    .request {
+      padding: 16px;
       background: #282828;
       border-bottom: 1px solid black;
       height: 40px;
@@ -89,7 +127,30 @@
       background-color: rgb(46, 46, 46);
     }
 
+    .request {
+      .display-text {
+        display: flex;
+        align-items: center;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        flex: 1;
+        column-gap: 10px;
+        i {
+          font-size: 24px;
+          border: 1px solid rgb(63, 63, 63);
+          border-radius: 8px;
+          padding: 4px;
+          &:hover {
+            background: #515151;
+          }
+        }
+      }
+    }
   }
+
+
   .bottom-nav {
     bottom: 0;
     position: absolute;

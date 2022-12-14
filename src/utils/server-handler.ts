@@ -25,7 +25,7 @@ export function getUserId(authId: string): Promise<{_id: string}> {
   });
 }
 
-export function getUserContacts(user: AppUser): Promise<never[]> {
+export function getUserContacts(user: AppUser): Promise<{ contacts: AppUser[], requests: AppUser[] }> {
   const config: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
@@ -157,5 +157,50 @@ export function getMessagesBetweenUsers(me: string, you: string, index?: string)
         data = success && data && data.length ? data : []; 
         success ? resolve(data) : reject(data);
       });
+  });
+}
+
+export function acceptFriendRequest(from: string, to: string): Promise<boolean> {
+  const config: RequestInit = {
+    method: 'POST',
+    body: JSON.stringify({
+      from,
+      to
+    })
+  };
+
+  return new Promise((resolve, reject) => {
+    let success = true;
+    fetch(API_URL + '/accept-friend-request', config)
+      .then(res => {
+        success = res.ok;
+        return res.json();
+      })
+      .then(data => {
+        success ? resolve(data) : reject(data);
+      });
+      
+  });
+}
+
+export function sendFriendRequest(from: string, to: string): Promise<boolean> {
+  const config: RequestInit = {
+    method: 'POST',
+    body: JSON.stringify({
+      from,
+      to,
+    })
+  };
+
+  return new Promise((resolve, reject) => {
+    let success = false;
+    fetch(API_URL + '/send-friend-request', config)
+      .then(res => {
+        success = res.ok;
+        return res.json();
+      })
+      .then(data => {
+        success ? resolve(data) : reject(data);
+      })
   });
 }
