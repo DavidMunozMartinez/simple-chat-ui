@@ -1,0 +1,17 @@
+{
+  "name": "Chat",
+  "short_name": "Chat",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#bebebe",
+  "icons": [{
+    "src": "icon.svg",
+    "sizes": "48x48",
+    "type": "image/svg+xml"
+  }, {
+    "src": "icon.svg",
+    "sizes": "72x72",
+    "type": "image/svg+xml"
+  }]
+}
+
