@@ -38,7 +38,7 @@ export function initWebSockets(_id: string) {
   ws.onclose = () => {
     setTimeout(() => {
       initWebSockets(_id);
-      (ChatMessagesList.refreshMessages as any)()
+      (ChatMessagesList.refreshMessages as any)();
       (ChatContacts.loadContacts as any)();
     });
   };
