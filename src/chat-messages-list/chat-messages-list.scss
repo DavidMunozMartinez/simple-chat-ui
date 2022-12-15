@@ -4,10 +4,10 @@
 // append
 #trash {
   position: absolute;
-  bottom: 60px;
+  bottom: calc(60px + env(safe-area-inset-bottom));
   padding: 8px;
   background-color: rgb(58, 58, 58);
-  height: 
+  max-height: 
     calc(100% - (120px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
 
   display: flex;
@@ -21,6 +21,8 @@
 }
 
 #chat-ui {
+  height: 
+    calc(100% - (120px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
   .message-container {
     cursor: pointer;
     display: inline-block;
