@@ -6,6 +6,9 @@
   background-color: #222222;
   box-sizing: border-box;
   margin-bottom: env(safe-area-inset-bottom);
+  &:focus {
+    margin-bottom: 0;
+  }
   input {
     background: #191919;
     border: 1px solid black;
