@@ -1,4 +1,5 @@
 import { Bind } from "bindrjs";
+import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { LoginBind } from "../login-view/login-view";
 import './chat-upper-bar.scss';
 
@@ -15,7 +16,7 @@ export const ChatUpperBar = (() => {
   });
 
   function toggleContacts() {
-
+    ChatContacts.hideContacts = !ChatContacts.hideContacts;
   }
 
   function logout() {
