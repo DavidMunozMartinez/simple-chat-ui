@@ -47,6 +47,7 @@ export const ChatContacts = (() => {
     sendFriendRequest(ChatUpperBar._id, result._id).then((data: any) => {
       if (data.success) {
         (AppModal.show as any)('Sent a friend request to: ' + result.email);
+        bind.searchResults = [];
       }
     });
   }
