@@ -7,6 +7,8 @@
   top: 0;
   transition: transform 200ms ease-in-out;
 
+  margin-top: env(safe-area-inset-top);
+
   .search {
     padding: 16px 32px;
     position: relative;
@@ -76,7 +78,7 @@
   }
 
   .contacts-container {
-    height: calc(100% - 135px);
+    height: calc(100% - (70px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
     .tabs {
       height: 30px;
       display: flex;
@@ -161,6 +163,8 @@
     align-items: center;
     padding: 10px 20px;
     box-sizing: border-box;
+
+    margin-bottom: env(safe-area-inset-bottom);
     span {
       display: none;
     }
