@@ -6,6 +6,11 @@ body {
   * {
     font-size: 16px;
   }
+
+  padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(
+    safe-area-inset-bottom,
+    20px
+  ) env(safe-area-inset-left, 20px);
 }
 button {
   background-color: none;
@@ -53,6 +58,10 @@ button {
     transform: translateX(-100%);
   }
 }
+
+
+
+// env(safe-area-inset-bottom, 0.5vh);
 
 @keyframes appear {
   0% {
