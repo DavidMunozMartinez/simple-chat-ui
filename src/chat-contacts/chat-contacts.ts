@@ -49,7 +49,10 @@ export const ChatContacts = (() => {
     if (!hasSentFriendRequest) {
       (AppModal.show as any)('You already sent a friend request to this account');
       bind.searchResults = [];
-      selectChat(result);
+      let isInContacts = bind.contacts.some((req: any) => result._id === req._id);
+      if (isInContacts) {
+        selectChat(result);
+      }
     } else {
       sendFriendRequest(ChatUpperBar._id, result._id).then((sentRequests: any) => {
         (AppModal.show as any)('Sent a friend request to: ' + result.email);
