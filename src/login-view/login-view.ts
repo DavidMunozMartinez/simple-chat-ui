@@ -67,9 +67,9 @@ export const LoginBind = (() => {
       console.error(error);
     } else {
       if (data.user && data.user.email && data.user.id) {
-        let user = data.user;
-        serverSignIn(data.user.id, data.user.email).then((id) => {
-          assignUserToApp(id, user);
+        let auth = data.user;
+        serverSignIn(data.user.id, data.user.email).then((user: any) => {
+          assignUserToApp(user._id, auth);
         });
       }
     }

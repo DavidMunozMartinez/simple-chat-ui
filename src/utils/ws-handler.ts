@@ -1,6 +1,6 @@
 import { AppModal } from "../app-modal/app-moda";
 import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage, ChatMessagesList, MessageLists } from "../chat-messages-list/chat-messages-list";
+import { appendMessage, ChatMessagesList, PendingMessages } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
@@ -20,7 +20,9 @@ export function initWebSockets(_id: string) {
       if (ChatContacts.activeChat === from) {
         appendMessage(message, from);
       }
-      MessageLists[from].push(JSON.parse(event.data))
+
+      if (!PendingMessages[from]) PendingMessages[from] = [];
+      PendingMessages[from].push(JSON.parse(event.data));
     } else {
       switch (data.type) {
         case 'request-received':

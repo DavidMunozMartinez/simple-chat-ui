@@ -8,6 +8,7 @@ const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
 
 export const MessageLists: {[key: string]: any[]} = {};
+export const PendingMessages: {[key: string]: any[]} = {};
 
 const TimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' })
 
@@ -48,7 +49,11 @@ export const ChatMessagesList = (() => {
     if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = ''
     if (!MessageLists[you]) {
       getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
-        MessageLists[you] = messages;
+        if (PendingMessages[you]) {
+          MessageLists[you] = messages.concat(PendingMessages[you] as any || []);
+        } else {
+          MessageLists[you] = messages;
+        }
         messages.forEach((message: any) => {
           let from = message.from === you ? you : undefined;
           appendMessage(message.message, from, new Date(message.createdAt));

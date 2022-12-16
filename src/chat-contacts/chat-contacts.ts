@@ -18,6 +18,7 @@ export const ChatContacts = (() => {
       searchTerm: '',
       contacts: [],
       requests: [],
+      sentRequests: [],
       searchResults: [],
       hideContacts: true,
       tab: 'friends'
@@ -44,20 +45,21 @@ export const ChatContacts = (() => {
   }
 
   function friendRequest(result: any) {
-    sendFriendRequest(ChatUpperBar._id, result._id).then((data: any) => {
-      if (data.success) {
-        (AppModal.show as any)('Sent a friend request to: ' + result.email);
-        bind.searchResults = [];
-      }
+    sendFriendRequest(ChatUpperBar._id, result._id).then((sentRequests: any) => {
+      (AppModal.show as any)('Sent a friend request to: ' + result.email);
+      bind.searchResults = [];
+      bind.sentRequests = sentRequests;
     });
   }
 
   function acceptRequest(request: any) {
     acceptFriendRequest(request._id, ChatUpperBar._id).then((data: any) => {
       if (data.success) {
+      (AppModal.show as any)('Accepted ' + request.email + ' request!');
         let index = bind.requests.indexOf(request as never);
         let contact = bind.requests.splice(index, 1);
         bind.contacts.push(contact[0]);
+        selectChat(contact);
       }
     });
   }
@@ -68,7 +70,7 @@ export const ChatContacts = (() => {
       email: ChatUpperBar.email,
     };
 
-    getUserContacts(user).then((contactData) => {
+    getUserContacts(user).then((contactData: any) => {
       if (contactData.contacts) {
         let contacts = contactData.contacts;
         bind.contacts = contacts as any;
@@ -85,6 +87,10 @@ export const ChatContacts = (() => {
 
       if (contactData.requests) {
         bind.requests = contactData.requests as any;
+      }
+
+      if (contactData.sentRequests && contactData.sentRequests.length) {
+        bind.sentRequests = contactData.sentRequests;
       }
 
       SpashScreen.loading = false;

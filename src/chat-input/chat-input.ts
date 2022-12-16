@@ -1,6 +1,6 @@
 import { Bind } from "bindrjs";
 import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage } from "../chat-messages-list/chat-messages-list";
+import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { sendMessage } from "../utils/server-handler";
 import './chat-input.scss';
@@ -35,8 +35,13 @@ export const ChatInput = (() => {
         ChatUpperBar._id,
         ChatContacts.activeChat,
         bind.inputValue
-      ).then(() => {
+      ).then((message: any) => {
         appendMessage(bind.inputValue);
+        if (MessageLists[ChatContacts.activeChat]) {
+          MessageLists[ChatContacts.activeChat].push(message);
+        } else {
+          MessageLists[ChatContacts.activeChat] = [message];
+        }
         bind.inputValue = '';
         if (MessageInput) MessageInput.value = ''
       })
