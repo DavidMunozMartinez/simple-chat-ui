@@ -154,7 +154,7 @@
         <div class="tabs">
           <span :class:active="this.tab === 'friends'" :onclick="this.tab = 'friends'">Friends</span>
           <span :class:active="this.tab === 'requests'" :onclick="this.tab = 'requests'">
-            Friend Requests ${this.requests.length ? this.requests.length : ''}
+            Friend Requests ${this.requests.length ? '(' + this.requests.length + ')' : ''}
           </span>
           <span class="bottom"></span>
         </div>

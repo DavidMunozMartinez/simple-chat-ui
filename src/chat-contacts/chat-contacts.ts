@@ -65,11 +65,11 @@ export const ChatContacts = (() => {
   function acceptRequest(request: any) {
     acceptFriendRequest(request._id, ChatUpperBar._id).then((data: any) => {
       if (data.success) {
-      (AppModal.show as any)('Accepted ' + request.email + ' request!');
+        (AppModal.show as any)('Accepted ' + request.email + ' request!');
         let index = bind.requests.indexOf(request as never);
         let contact = bind.requests.splice(index, 1);
         bind.contacts.push(contact[0]);
-        selectChat(contact);
+        selectChat(contact[0]);
       }
     });
   }
