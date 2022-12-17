@@ -1,0 +1,32 @@
+{
+  "name": "Chat",
+  "orientation": "portrait",
+  "short_name": "Chat",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "categories": ["social"],
+  "icons": [
+    {
+      "src": "/icon-x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }, 
+    {
+      "src": "/icon-x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-x120.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    }
+  ]
+}
+
