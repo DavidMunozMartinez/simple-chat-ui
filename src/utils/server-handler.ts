@@ -111,12 +111,13 @@ export function addContact(_id: string, contactId: string): Promise<never[]> {
   });
 }
 
-export function sendMessage(from: string, to: string, message: string) {
+export function sendMessage(from: string, to: string, title: string, message: string) {
   const config: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
       from,
       to,
+      title,
       message,
       createdAt: new Date()
     })
@@ -227,3 +228,25 @@ export function updateUserProfile(_id: string, name: string) {
       })
   });
 } 
+
+export function updateUserToken(_id: string, token: string) {
+  const config: RequestInit = {
+    method: 'POST',
+    body: JSON.stringify({
+      _id,
+      token
+    })
+  };
+
+  return new Promise((resolve, reject) => {
+    let success = false;
+    fetch(API_URL + '/update-user-token', config)
+      .then(res => {
+        success = res.ok;
+        return res.json()
+      })
+      .then(data => {
+        success ? resolve(data) : reject(data);
+      })
+  });
+}

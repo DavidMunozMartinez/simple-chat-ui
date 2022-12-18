@@ -31,19 +31,20 @@ export const ChatInput = (() => {
 
   function submitMessage() {
     if (bind.inputValue.trim() && ChatContacts.activeChat && ChatContacts.activeChat.trim()) {
+      appendMessage(bind.inputValue);
+      MessageInput.value = '';
       sendMessage(
         ChatUpperBar._id,
         ChatContacts.activeChat,
+        ChatUpperBar.activeChatName,
         bind.inputValue
       ).then((message: any) => {
-        appendMessage(bind.inputValue);
         if (MessageLists[ChatContacts.activeChat]) {
           MessageLists[ChatContacts.activeChat].push(message);
         } else {
           MessageLists[ChatContacts.activeChat] = [message];
         }
         bind.inputValue = '';
-        if (MessageInput) MessageInput.value = ''
       })
     }
   }

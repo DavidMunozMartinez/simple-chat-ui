@@ -4,13 +4,45 @@ import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { ProfileBind } from "../profile-view/profile-view";
 import { SpashScreen } from "../splash-screen/spash-screen";
-import { SUPABASE_URL, SUPABASE_KEY } from "../utils/constants";
-import { getUserId, serverSignIn } from "../utils/server-handler";
+import { SUPABASE_URL, SUPABASE_KEY, WEB_PUSH_KEY } from "../utils/constants";
+import { getUserId, serverSignIn, updateUserToken } from "../utils/server-handler";
 import { initWebSockets } from "../utils/ws-handler";
 import './login-view.scss';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage } from 'firebase/messaging';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBPQc7Y2scgOXCFzs_2guJXM6ZlfuaNO00",
+  authDomain: "simple-web-chat-64586.firebaseapp.com",
+  projectId: "simple-web-chat-64586",
+  storageBucket: "simple-web-chat-64586.appspot.com",
+  messagingSenderId: "727296131926",
+  appId: "1:727296131926:web:6943b05a173c42e69d8cf7"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+onMessage(messaging, (data: MessagePayload) => {
+  if (data.notification) {
+    const notification: NotificationPayload = data.notification;
+    new Notification(notification.title || 'Untitled', {
+      body: notification.body,
+      icon: notification.icon,
+      image: notification.image
+    });
+  }
+});
+
 export const LoginBind = (() => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  // const observer = new Obs
   const { bind } = new Bind({
     id: 'login-view',
     bind: {
@@ -112,6 +144,21 @@ export const LoginBind = (() => {
     }
     (ChatContacts.loadContacts as any)(true);
     initWebSockets(user._id);
+    initWebPush();
+  }
+
+  async function initWebPush() {
+    let currentToken = '';
+    try {
+      // messaging.app.option
+      currentToken = await getToken(messaging, {
+        vapidKey: WEB_PUSH_KEY
+      });
+      console.log(currentToken);
+      updateUserToken(ChatUpperBar._id, currentToken);
+    } catch (error) {
+      console.log('An error occurred while retrieving token.', error);
+    }
   }
 
   return bind;
