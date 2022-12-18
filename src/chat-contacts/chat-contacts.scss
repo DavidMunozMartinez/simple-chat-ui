@@ -2,7 +2,7 @@
   height: 100%;
   width: 400px;
   background: #222222;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   transition: transform 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -71,8 +71,6 @@
             background-color: #515151;
           }
         }
-      }
-      .result:hover {
       }
     }
   }

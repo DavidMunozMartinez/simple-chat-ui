@@ -4,11 +4,11 @@
 // append
 #trash {
   position: absolute;
-  bottom: calc(60px + env(safe-area-inset-bottom));
+  bottom: (60px);
   padding: 8px;
   background-color: rgb(58, 58, 58);
   max-height: 
-    calc(100% - (120px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+    calc(100% - (120px + env(safe-area-inset-top)));
 
   display: flex;
   flex-direction: column-reverse;

@@ -5,10 +5,12 @@
   display: flex;
   background-color: #222222;
   box-sizing: border-box;
-  margin-bottom: env(safe-area-inset-bottom);
-  &:focus {
-    margin-bottom: 0;
-  }
+  // margin-bottom: env(safe-area-inset-bottom);
+  // transition: margin-bottom 500ms cubic-bezier(0.38, 0.7, 0.125, 1);
+  // transition-delay: 200ms;
+  // &:focus-within {
+  //   margin-bottom: 0;
+  // }
   input {
     background: #191919;
     border: 1px solid black;
