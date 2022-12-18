@@ -22,7 +22,7 @@
 
 #chat-ui {
   height: 
-    calc(100% - (120px + env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+    calc(100% - (120px + env(safe-area-inset-top)));
   .message-container {
     cursor: pointer;
     display: inline-block;
