@@ -2,6 +2,7 @@ import { createClient, User, UserResponse } from "@supabase/supabase-js";
 import { Bind } from "bindrjs"
 import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
+import { ProfileBind } from "../profile-view/profile-view";
 import { SpashScreen } from "../splash-screen/spash-screen";
 import { SUPABASE_URL, SUPABASE_KEY } from "../utils/constants";
 import { getUserId, serverSignIn } from "../utils/server-handler";
@@ -32,8 +33,8 @@ export const LoginBind = (() => {
       supabase.auth.getUser()
         .then((value: UserResponse) => {
           if (value.data && value.data.user && value.data.user.id) {
-            getUserId(value.data.user.id).then(({ _id }) => {
-              assignUserToApp(_id, value.data.user as User);
+            getUserId(value.data.user.id).then((user) => {
+              assignUserToApp(user, value.data.user as User);
             })
           } else {
             SpashScreen.loading = false;
@@ -69,7 +70,7 @@ export const LoginBind = (() => {
       if (data.user && data.user.email && data.user.id) {
         let auth = data.user;
         serverSignIn(data.user.id, data.user.email).then((user: any) => {
-          assignUserToApp(user._id, auth);
+          assignUserToApp(user, auth);
         });
       }
     }
@@ -85,26 +86,32 @@ export const LoginBind = (() => {
       console.error(error);
     } else {
       if (data.user) {
-        let user = data.user;
-        getUserId(data.user.id).then(({_id}) => {
-          assignUserToApp(_id, user)
+        let auth = data.user;
+        getUserId(data.user.id).then((user) => {
+          assignUserToApp(user, auth);
         })
       }
     }
   }
 
   function logout () {
-    return supabase.auth.signOut();
+    return supabase.auth.signOut().then(() => {
+      location.reload();
+    });
   }
 
-  function assignUserToApp(_id: string, user: User) {
+  function assignUserToApp(user: any, auth: User) {
     bind.activeSession = true;
-    ChatUpperBar._id = _id;
-    if (user.email) {
-      ChatUpperBar.email = user.email
+    ChatUpperBar._id = user._id;
+    if (auth.email) {
+      ProfileBind.email = auth.email;
+      ProfileBind.photo = '';
+      ProfileBind.displayName = user.name;
+      ChatUpperBar.email = auth.email;
+
     }
     (ChatContacts.loadContacts as any)(true);
-    initWebSockets(_id);
+    initWebSockets(user._id);
   }
 
   return bind;

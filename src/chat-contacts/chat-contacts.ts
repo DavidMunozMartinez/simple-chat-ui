@@ -14,7 +14,7 @@ export const ChatContacts = (() => {
       friendRequest,
       acceptRequest,
       selectChat: selectChat,
-      activeChat: null,
+      activeChat: '',
       searchTerm: '',
       contacts: [],
       requests: [],
@@ -32,10 +32,17 @@ export const ChatContacts = (() => {
       queryGlobalContacts(bind.searchTerm.trim()).then((results: never[]) => {
         if (results && (results as any[]).length) {
           // Remove yourself
-          let filtered = results.filter((res: any) => res._id != ChatUpperBar._id)
+          let filtered = results.filter((res: any) => {
+            (bind.contacts as any).indexOf(res._id) === -1 &&
+            res._id != ChatUpperBar._id;
+          });
           bind.searchResults = filtered;
         } else {
           bind.searchResults = [];
+        }
+
+        if (!bind.searchResults.length) {
+          AppModal.show('No results');
         }
       });
     }
@@ -47,7 +54,7 @@ export const ChatContacts = (() => {
   function friendRequest(result: any) {
     let hasSentFriendRequest = bind.sentRequests.some((req: any) => result._id === req._id);
     if (!hasSentFriendRequest) {
-      (AppModal.show as any)('You already sent a friend request to this account');
+      AppModal.show('You already sent a friend request to this account');
       bind.searchResults = [];
       let isInContacts = bind.contacts.some((req: any) => result._id === req._id);
       if (isInContacts) {
@@ -55,7 +62,7 @@ export const ChatContacts = (() => {
       }
     } else {
       sendFriendRequest(ChatUpperBar._id, result._id).then((sentRequests: any) => {
-        (AppModal.show as any)('Sent a friend request to: ' + result.email);
+        AppModal.show('Sent a friend request to: ' + result.email);
         bind.searchResults = [];
         bind.sentRequests = sentRequests;
       });

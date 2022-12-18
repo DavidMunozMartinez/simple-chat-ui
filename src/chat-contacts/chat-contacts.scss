@@ -5,7 +5,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  transition: transform 200ms ease-in-out;
+  transition: transform 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   margin-top: env(safe-area-inset-top);
 
@@ -125,8 +125,16 @@
         }
       }
     }
-    .contact.active {
-      background-color: rgb(46, 46, 46);
+    .contact {
+      .active {
+        background-color: rgb(46, 46, 46);
+      }
+      .display-text {
+        .secondary {
+          color: lightgray;
+          color: rgb(106, 106, 106);
+        }
+      }
     }
 
     .request {

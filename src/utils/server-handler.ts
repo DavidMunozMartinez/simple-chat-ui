@@ -5,7 +5,7 @@ type AppUser = {
   email: string,
 }
 
-export function getUserId(authId: string): Promise<{_id: string}> {
+export function getUserId(authId: string): Promise<{_id: string, name: string}> {
   const config: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
@@ -204,3 +204,26 @@ export function sendFriendRequest(from: string, to: string): Promise<boolean> {
       })
   });
 }
+
+
+export function updateUserProfile(_id: string, name: string) {
+  const config: RequestInit = {
+    method: 'POST',
+    body: JSON.stringify({
+      _id,
+      name
+    })
+  };
+
+  return new Promise((resolve, reject) => {
+    let success = false;
+    fetch(API_URL + '/update-user', config)
+      .then(res => {
+        success = res.ok;
+        return res.json()
+      })
+      .then(data => {
+        success ? resolve(data) : reject(data);
+      })
+  });
+} 

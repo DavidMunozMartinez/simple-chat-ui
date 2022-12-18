@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/public/icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lucaburgio/iconoir@main/css/iconoir.css">
     <link rel="stylesheet" href="./src/style.scss">
     <link rel="stylesheet" href="./src/login-view/login-view.scss">
+    <link rel="stylesheet" href="./src/profile-view/profile-view.scss">
     <link rel="stylesheet" href="./src/chat-upper-bar/chat-upper-bar.scss">
     <link rel="stylesheet" href="./src/chat-messages-list/chat-messages-list.scss">
     <link rel="stylesheet" href="./src/chat-input/chat-input.scss">
@@ -103,7 +104,7 @@
         <span>${this.activeChatName}</span>
       </span>
       <span class="user-email">
-        <i class="iconoir-log-out" :onclick="this.logout()"></i>
+        <i class="iconoir-settings" :onclick="this.profile()" ></i>
       </span>
     </div>
 
@@ -171,8 +172,12 @@
             </div>
   
             <div class="display-text">
-              <div :if="contact.name">${contact.name}</div>
-              <div :else>${contact.email}</div>
+              <div class="display-name">
+                ${contact.name}
+              </div>
+              <div class="email" :class:secondary="!!contact.name">
+                ${contact.email}
+              </div>
             </div>
           </div>
         </div>
@@ -204,6 +209,36 @@
         </span>
       </div>
 
+    </div>
+
+    <div id="profile-view" :class:show="this.showProfile">
+      <div class="profile-info">
+        <div class="photo">
+          <img :if="this.photo" :src="this.photo"/>
+          <div :else>
+            <i class="iconoir-user"></i>
+          </div>
+        </div>
+        <div class="email">${this.email}</div>
+        <div class="profile-name">
+          <p>
+            Display Name:
+          </p>
+          <input type="text"
+            :value="this.displayName"
+            :oninput="this.displayName = event.target.value"
+            placeholder="Your display name (visible to your friends)">
+        </div>
+      </div>
+
+      <div class="actions">
+        <span class="back" :onclick="this.closeProfile()">
+          <i class="iconoir-nav-arrow-right"></i>
+        </span>
+        <span class="logout" :onclick="this.logout()">
+          <i class="iconoir-log-out"></i>
+        </span>
+      </div>
     </div>
 
     <div id="splash-screen" :class:hide="!this.loading">
