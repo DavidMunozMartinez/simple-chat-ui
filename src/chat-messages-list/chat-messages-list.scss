@@ -6,7 +6,7 @@
   position: absolute;
   bottom: (60px);
   padding: 8px;
-  background-color: rgb(58, 58, 58);
+  background-color: rgb(41, 41, 41);
   max-height: 
     calc(100% - (120px + env(safe-area-inset-top)));
 
@@ -62,11 +62,12 @@
       max-width: 50%;
       overflow-wrap: break-word;
       display: inline-block;
-      border-radius: 16px;
+      border-radius: 9px;
       color: white;
       margin: 0;
       margin-top: 8px;
       box-sizing: border-box;
+
     
       animation-name: appear;
       animation-duration: 200ms;
@@ -80,10 +81,14 @@
       &.sent {
         background-color: #17895c;
         float: right;
+        box-shadow: 1px 1px 1px rgb(30,30,30);
+
       }
       &.received {
-        background-color: black;
+        background-color: #1c1c1c;
         float: left;
+        box-shadow: 1px 1px 1px rgb(30,30,30);
+
       }
     }
   }
@@ -93,6 +98,8 @@
     font-size: 14px;
     color: rgba(255,255,255,0.2);
     padding: 10px 5px;
+    width: 80px;
+    text-align: center;
   }
   .message-container.sent p.timestamp {
     float: right;
@@ -102,15 +109,15 @@
   }
 
   .message-container.out {
-    p {
+    p:not(.timestamp) {
       opacity: 0.7;
       transform: scale(0.7);
     }
   }
 
   .message-container:hover {
-    p {
-      transform: scale(1.09);
+    p:not(.timestamp) {
+      transform: scale(1.05);
     }
     .options {
       span {
