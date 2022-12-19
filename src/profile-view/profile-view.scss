@@ -8,9 +8,7 @@
   border-radius: 8px;
   transform: translateX(100%);
 
-  // padding-top: calc(20px + env(safe-area-inset-top));
   padding-left: 20px;
-  // padding-bottom: calc(20px + env(safe-area-inset-bottom));
   padding-right: 20px;
   box-sizing: border-box;
 
@@ -42,8 +40,8 @@
       }
     }
 
-    .profile-name {
-      input {
+    .profile-input {
+      input.display-name {
         box-sizing: border-box;
         width: 100%;
         height: 38px;

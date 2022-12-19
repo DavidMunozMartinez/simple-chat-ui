@@ -1,6 +1,6 @@
 import { AppModal } from "../app-modal/app-moda";
 import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage, ChatMessagesList, PendingMessages } from "../chat-messages-list/chat-messages-list";
+import { appendMessage, ChatMessagesList, UnreadMessages } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
@@ -18,19 +18,19 @@ export function initWebSockets(_id: string) {
     if (!data.type) {
       const { message, from, createdAt } = JSON.parse(event.data);
       if (ChatContacts.activeChat === from) {
-        appendMessage(message, from, createdAt);
+        appendMessage(message, createdAt, from);
       }
 
-      if (!PendingMessages[from]) PendingMessages[from] = [];
-      PendingMessages[from].push(JSON.parse(event.data));
+      if (!UnreadMessages[from]) UnreadMessages[from] = [];
+      UnreadMessages[from].push(JSON.parse(event.data));
     } else {
       switch (data.type) {
         case 'request-received':
-          (AppModal.show as any)('New Friend Request!');
+          AppModal.show('New Friend Request!');
           ChatContacts.requests.push(data as never);
           break;
         case 'request-accepted':
-          (AppModal.show as any)(data.email + ' accepted your firend request');
+          AppModal.show(data.email + ' accepted your firend request');
           ChatContacts.contacts.push(data as never);
           break;
       }
@@ -40,8 +40,10 @@ export function initWebSockets(_id: string) {
   ws.onclose = () => {
     setTimeout(() => {
       initWebSockets(_id);
-      (ChatMessagesList.refreshMessages as any)();
-      (ChatContacts.loadContacts as any)();
+      ChatMessagesList.refreshMessages();
+
+      // TODO: make a refresh version of this function
+      ChatContacts.loadContacts();
     });
   };
 

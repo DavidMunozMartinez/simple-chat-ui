@@ -127,7 +127,9 @@
         :oninput="this.inputValue = event.target.value"
         :class:disabled="this.enabled"
         />
-      <button id="send-button" :onclick="this.submitMessage()"><i class="iconoir-send"></i></button>
+      <button id="send-button">
+        <i class="iconoir-plus"></i>
+      </button>
     </div>
 
     <div id="chat-contacts" :class:hide="this.hideContacts">
@@ -220,14 +222,20 @@
           </div>
         </div>
         <div class="email">${this.email}</div>
-        <div class="profile-name">
+        <div class="profile-input">
           <p>
             Display Name:
           </p>
           <input type="text"
+            class="display-name"
             :value="this.displayName"
             :oninput="this.displayName = event.target.value"
             placeholder="Your display name (visible to your friends)">
+        </div>
+        <div class="profile-input">
+          <p> Bubble colors: </p>
+          Background: <input type="color">
+          Border: <input type="color">
         </div>
       </div>
 

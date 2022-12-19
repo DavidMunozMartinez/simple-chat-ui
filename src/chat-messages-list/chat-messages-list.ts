@@ -8,9 +8,12 @@ const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
 
 export const MessageLists: {[key: string]: any[]} = {};
-export const PendingMessages: {[key: string]: any[]} = {};
+export const UnreadMessages: {[key: string]: any[]} = {};
 
-const TimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' })
+const ShortTimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' });
+const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'short'});
+let dateMarks: { [key: string]: boolean } = {};
+
 
 export const ChatMessagesList = (() => {
   const { bind } = new Bind({
@@ -46,24 +49,26 @@ export const ChatMessagesList = (() => {
   }
 
   function loadMessages(you: string) {
-    if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = ''
+    if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = '';
+    dateMarks = {};
     if (!MessageLists[you]) {
       getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
-        if (PendingMessages[you]) {
-          MessageLists[you] = messages.concat(PendingMessages[you] as any || []);
+        if (UnreadMessages[you]) {
+          MessageLists[you] = messages.concat(UnreadMessages[you] as any || []);
+          UnreadMessages[you] = [];
         } else {
           MessageLists[you] = messages;
         }
         messages.forEach((message: any) => {
           let from = message.from === you ? you : undefined;
-          appendMessage(message.message, from, new Date(message.createdAt));
+          appendMessage(message.message, new Date(message.createdAt), from);
         });
         SpashScreen.loading = false;
       });
     } else {
       MessageLists[you].forEach((message) => {
         let from = message.from === you ? you : undefined;
-        appendMessage(message.message, from, new Date(message.createdAt));
+        appendMessage(message.message, new Date(message.createdAt), from);
       });
     }
   }
@@ -79,7 +84,7 @@ export const ChatMessagesList = (() => {
       getMessagesBetweenUsers(ChatUpperBar._id, contactId, lastMessageId).then((newMessages) => {
         MessageLists[contactId] = MessageLists[contactId].concat(newMessages);
         newMessages.forEach((message: any) => {
-          appendMessage(message.message, contactId, new Date(message.createdAt));
+          appendMessage(message.message, new Date(message.createdAt), contactId);
         });
       });
     });
@@ -91,7 +96,7 @@ export const ChatMessagesList = (() => {
 /**
  * We use native methods here to have more control over the animations and transition
  */
-export function appendMessage(message: string, from?: string, dateTime?: Date) {
+export function appendMessage(message: string, dateTime: Date, from?: string) {
   let el = document.createElement("div");
   el.classList.add("message-container");
   el.classList.add(!from ? "sent" : "received");
@@ -103,8 +108,23 @@ export function appendMessage(message: string, from?: string, dateTime?: Date) {
         </div>
       `;
   }
+  let dateKey = ShortDateFormatter.format(dateTime);
+  console.log(dateKey);
+  if (!dateMarks[dateKey]) {
+    let now = new Date();
+    dateMarks[dateKey] = true;
+    let marker = document.createElement("div");
+    marker.classList.add('message-container');
+    marker.classList.add('marker');
+    let dateText = dateKey === ShortDateFormatter.format(now) ? 'Today' : dateKey
+    marker.innerHTML = `
+      <p class="timestamp marker">${dateText}</p>
+    `;
+    ChatMessagesListRef?.insertBefore(marker, ChatMessagesListRef.firstChild)
+  }
+
   el.innerHTML = `
-      <p class="timestamp"> ${TimeFormatter.format(dateTime)} </p>
+      <p class="timestamp"> ${ShortTimeFormatter.format(dateTime)} </p>
       <p class="${!from ? "sent" : "received"}">${message} </p>
       ${options}
       `;

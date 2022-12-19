@@ -67,7 +67,7 @@
       margin: 0;
       margin-top: 8px;
       box-sizing: border-box;
-
+      font-size: 14px;
     
       animation-name: appear;
       animation-duration: 200ms;
@@ -92,10 +92,9 @@
       }
     }
   }
-
   .message-container.received p.timestamp,
   .message-container.sent p.timestamp {
-    font-size: 14px;
+    font-size: 13px;
     color: rgba(255,255,255,0.2);
     padding: 10px 5px;
     width: 80px;
@@ -107,7 +106,6 @@
   .message-container.received p.timestamp {
     float: left;
   }
-
   .message-container.out {
     p:not(.timestamp) {
       opacity: 0.7;
@@ -130,6 +128,14 @@
           transform: scale(0.6);
         }
       }
+    }
+  }
+  .message-container.marker {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    p {
+      color: rgba(147, 147, 147);
     }
   }
 }

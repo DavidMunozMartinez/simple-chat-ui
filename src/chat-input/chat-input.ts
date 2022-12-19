@@ -32,7 +32,7 @@ export const ChatInput = (() => {
 
   function submitMessage() {
     if (bind.inputValue.trim() && ChatContacts.activeChat && ChatContacts.activeChat.trim()) {
-      appendMessage(bind.inputValue, null, new Date());
+      appendMessage(bind.inputValue, new Date());
       MessageInput.value = '';
       sendMessage(
         ChatUpperBar._id,
