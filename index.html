@@ -117,29 +117,31 @@
         :onclick="this.hideContacts = !this.hideContacts">
         </i>
       </button>
-      <input
-        type="text"
-        id="message-input"
-        autofocus
-        placeholder="Send a message..."
-        :onkeydown="this.onInputKeydown(event)"
-        :value="this.inputValue"
-        :oninput="this.inputValue = event.target.value"
-        :class:disabled="this.enabled"
-        />
-      <!-- <button id="send-button">
-        <i class="iconoir-plus"></i>
-      </button> -->
+      <!-- <form action=""> -->
+        <input
+          type="text"
+          id="message-input"
+          autofocus
+          placeholder="Send a message..."
+          :onkeydown="this.onInputKeydown(event)"
+          :value="this.inputValue"
+          :oninput="this.inputValue = event.target.value"
+          :class:disabled="this.enabled"
+          />
+      <!-- </form> -->
+      <button id="send-button">
+        <i class="iconoir-send"></i>
+      </button>
     </div>
 
     <div id="chat-contacts" :class:hide="this.hideContacts">
       <div class="search">
         <i class="iconoir-search"></i>
-        <form action="">
+        <!-- <form action=""> -->
           <input type="text" placeholder="Search frens..."
             :oninput="this.onSearchInput(event)"
             :onkeydown="this.onSearchInput(event)">
-        </form>
+        <!-- </form> -->
         <div class="search-results" :if="this.searchResults.length">
           <div
             class="result"
