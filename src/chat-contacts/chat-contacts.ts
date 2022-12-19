@@ -31,10 +31,10 @@ export const ChatContacts = (() => {
     if (event.key === 'Enter' && bind.searchTerm.trim()) {
       queryGlobalContacts(bind.searchTerm.trim()).then((results: never[]) => {
         if (results && (results as any[]).length) {
+          let ids = bind.contacts.map((contact: any) => contact._id);
           // Remove yourself
           let filtered = results.filter((res: any) => {
-            (bind.contacts as any).indexOf(res._id) === -1 &&
-            res._id != ChatUpperBar._id;
+            return ids.indexOf(res._id) === -1 && res._id !== ChatUpperBar._id;
           });
           bind.searchResults = filtered;
         } else {
