@@ -11,7 +11,7 @@ import './login-view.scss';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage, Unsubscribe } from 'firebase/messaging';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,7 +29,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-onMessage(messaging, (data: MessagePayload) => {
+const unsubscribe: Unsubscribe = onMessage(messaging, (data: MessagePayload) => {
   if (data.notification) {
     const notification: NotificationPayload = data.notification;
     new Notification(notification.title || 'Untitled', {
@@ -128,6 +128,7 @@ export const LoginBind = (() => {
 
   function logout () {
     return supabase.auth.signOut().then(() => {
+      unsubscribe();
       location.reload();
     });
   }
@@ -150,7 +151,6 @@ export const LoginBind = (() => {
   async function initWebPush() {
     let currentToken = '';
     try {
-      // messaging.app.option
       currentToken = await getToken(messaging, {
         vapidKey: WEB_PUSH_KEY
       });
