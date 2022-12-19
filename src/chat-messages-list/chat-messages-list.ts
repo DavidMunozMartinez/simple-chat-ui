@@ -11,7 +11,7 @@ export const MessageLists: {[key: string]: any[]} = {};
 export const UnreadMessages: {[key: string]: any[]} = {};
 
 const ShortTimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' });
-const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'short'});
+const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'});
 let dateMarks: { [key: string]: boolean } = {};
 
 
