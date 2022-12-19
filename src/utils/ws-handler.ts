@@ -37,11 +37,21 @@ export function initWebSockets(_id: string) {
     }
   });
 
+  document.onfocus = () => {
+    if (ws.readyState === WebSocket.CLOSED) {
+      setTimeout(() => {
+        initWebSockets(_id);
+        ChatMessagesList.refreshMessages();
+        // TODO: make a refresh version of this function
+        ChatContacts.loadContacts();
+      });
+    }
+  }
+
   ws.onclose = () => {
     setTimeout(() => {
       initWebSockets(_id);
       ChatMessagesList.refreshMessages();
-
       // TODO: make a refresh version of this function
       ChatContacts.loadContacts();
     });
