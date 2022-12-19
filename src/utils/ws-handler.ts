@@ -16,9 +16,9 @@ export function initWebSockets(_id: string) {
   ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if (!data.type) {
-      const { message, from } = JSON.parse(event.data);
+      const { message, from, createdAt } = JSON.parse(event.data);
       if (ChatContacts.activeChat === from) {
-        appendMessage(message, from);
+        appendMessage(message, from, createdAt);
       }
 
       if (!PendingMessages[from]) PendingMessages[from] = [];

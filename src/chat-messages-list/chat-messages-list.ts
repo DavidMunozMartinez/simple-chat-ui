@@ -63,7 +63,7 @@ export const ChatMessagesList = (() => {
     } else {
       MessageLists[you].forEach((message) => {
         let from = message.from === you ? you : undefined;
-        appendMessage(message.message, from);
+        appendMessage(message.message, from, new Date(message.createdAt));
       });
     }
   }
