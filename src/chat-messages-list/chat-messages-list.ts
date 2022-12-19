@@ -53,7 +53,7 @@ export const ChatMessagesList = (() => {
     dateMarks = {};
     if (!MessageLists[you]) {
       getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
-        if (UnreadMessages[you]) {
+        if (UnreadMessages[you] && UnreadMessages[you].length) {
           MessageLists[you] = messages.concat(UnreadMessages[you] as any || []);
           UnreadMessages[you] = [];
         } else {
@@ -66,6 +66,10 @@ export const ChatMessagesList = (() => {
         SpashScreen.loading = false;
       });
     } else {
+      if (UnreadMessages[you] && UnreadMessages[you].length) {
+        MessageLists[you] = MessageLists[you].concat(UnreadMessages[you] as any || []);
+        UnreadMessages[you] = [];
+      }
       MessageLists[you].forEach((message) => {
         let from = message.from === you ? you : undefined;
         appendMessage(message.message, new Date(message.createdAt), from);

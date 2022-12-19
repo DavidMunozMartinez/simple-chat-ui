@@ -1,6 +1,6 @@
 import { AppModal } from "../app-modal/app-moda";
 import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage, ChatMessagesList, UnreadMessages } from "../chat-messages-list/chat-messages-list";
+import { appendMessage, ChatMessagesList, MessageLists, UnreadMessages } from "../chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {
@@ -19,10 +19,12 @@ export function initWebSockets(_id: string) {
       const { message, from, createdAt } = JSON.parse(event.data);
       if (ChatContacts.activeChat === from) {
         appendMessage(message, new Date(createdAt), from);
+        MessageLists[from].push(JSON.parse(event.data));
+      } else {
+        if (!UnreadMessages[from]) UnreadMessages[from] = [];
+        UnreadMessages[from].push(JSON.parse(event.data));
       }
 
-      if (!UnreadMessages[from]) UnreadMessages[from] = [];
-      UnreadMessages[from].push(JSON.parse(event.data));
     } else {
       switch (data.type) {
         case 'request-received':
