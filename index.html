@@ -135,9 +135,11 @@
     <div id="chat-contacts" :class:hide="this.hideContacts">
       <div class="search">
         <i class="iconoir-search"></i>
-        <input type="text" placeholder="Search frens..."
-          :oninput="this.onSearchInput(event)"
-          :onkeydown="this.onSearchInput(event)">
+        <form action="">
+          <input type="text" placeholder="Search frens..."
+            :oninput="this.onSearchInput(event)"
+            :onkeydown="this.onSearchInput(event)">
+        </form>
         <div class="search-results" :if="this.searchResults.length">
           <div
             class="result"
