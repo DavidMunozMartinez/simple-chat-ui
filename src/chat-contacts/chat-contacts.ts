@@ -53,7 +53,7 @@ export const ChatContacts = (() => {
 
   function friendRequest(result: any) {
     let hasSentFriendRequest = bind.sentRequests.some((req: any) => result._id === req._id);
-    if (!hasSentFriendRequest) {
+    if (hasSentFriendRequest) {
       AppModal.show('You already sent a friend request to this account');
       bind.searchResults = [];
       let isInContacts = bind.contacts.some((req: any) => result._id === req._id);
