@@ -18,7 +18,7 @@ export function initWebSockets(_id: string) {
     if (!data.type) {
       const { message, from, createdAt } = JSON.parse(event.data);
       if (ChatContacts.activeChat === from) {
-        appendMessage(message, createdAt, from);
+        appendMessage(message, new Date(createdAt), from);
       }
 
       if (!UnreadMessages[from]) UnreadMessages[from] = [];
