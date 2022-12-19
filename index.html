@@ -118,7 +118,7 @@
         </i>
       </button>
       <input
-        type="text"
+        type="submit"
         id="message-input"
         autofocus
         placeholder="Send a message..."
@@ -127,9 +127,9 @@
         :oninput="this.inputValue = event.target.value"
         :class:disabled="this.enabled"
         />
-      <button id="send-button">
+      <!-- <button id="send-button">
         <i class="iconoir-plus"></i>
-      </button>
+      </button> -->
     </div>
 
     <div id="chat-contacts" :class:hide="this.hideContacts">
