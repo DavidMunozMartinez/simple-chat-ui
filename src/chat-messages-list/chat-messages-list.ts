@@ -1,6 +1,6 @@
 import { Bind } from "bindrjs";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { SpashScreen } from "../splash-screen/spash-screen";
+import { SplashScreen } from "../splash-screen/splash-screen";
 import { getMessagesBetweenUsers } from "../utils/server-handler";
 import "./chat-messages-list.scss";
 
@@ -63,7 +63,7 @@ export const ChatMessagesList = (() => {
           let from = message.from === you ? you : undefined;
           appendMessage(message.message, new Date(message.createdAt), from);
         });
-        SpashScreen.loading = false;
+        SplashScreen.loading = false;
       });
     } else {
       if (UnreadMessages[you] && UnreadMessages[you].length) {
@@ -113,7 +113,6 @@ export function appendMessage(message: string, dateTime: Date, from?: string) {
       `;
   }
   let dateKey = ShortDateFormatter.format(dateTime);
-  console.log(dateKey);
   if (!dateMarks[dateKey]) {
     let now = new Date();
     dateMarks[dateKey] = true;

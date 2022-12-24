@@ -2,7 +2,7 @@ import { Bind } from "bindrjs"
 import { AppModal } from "../app-modal/app-moda";
 import { ChatMessagesList } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { SpashScreen } from "../splash-screen/spash-screen";
+import { SplashScreen } from "../splash-screen/splash-screen";
 import { acceptFriendRequest, getUserContacts, queryGlobalContacts, sendFriendRequest } from "../utils/server-handler";
 
 export const ChatContacts = (() => {
@@ -110,7 +110,7 @@ export const ChatContacts = (() => {
         bind.sentRequests = contactData.sentRequests;
       }
 
-      SpashScreen.loading = false;
+      SplashScreen.loading = false;
     });
   }
 

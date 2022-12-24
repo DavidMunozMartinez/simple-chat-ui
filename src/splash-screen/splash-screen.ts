@@ -1,6 +1,6 @@
 import { Bind } from "bindrjs";
 
-export const SpashScreen = (() => {
+export const SplashScreen = (() => {
   const { bind } = new Bind({
     id: 'splash-screen',
     bind: {

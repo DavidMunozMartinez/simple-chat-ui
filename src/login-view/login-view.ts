@@ -3,7 +3,7 @@ import { Bind } from "bindrjs"
 import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { ProfileBind } from "../profile-view/profile-view";
-import { SpashScreen } from "../splash-screen/spash-screen";
+import { SplashScreen } from "../splash-screen/splash-screen";
 import { SUPABASE_URL, SUPABASE_KEY, WEB_PUSH_KEY } from "../utils/constants";
 import { getUserId, serverSignIn, updateUserToken } from "../utils/server-handler";
 import { initWebSockets } from "../utils/ws-handler";
@@ -12,6 +12,7 @@ import './login-view.scss';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage, Unsubscribe } from 'firebase/messaging';
+import { AppModal } from "../app-modal/app-moda";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -69,11 +70,11 @@ export const LoginBind = (() => {
               assignUserToApp(user, value.data.user as User);
             })
           } else {
-            SpashScreen.loading = false;
+            SplashScreen.loading = false;
           }
         })
         .catch(() => {
-          SpashScreen.loading = false;
+          SplashScreen.loading = false;
         })
     }
   });
@@ -92,17 +93,21 @@ export const LoginBind = (() => {
 
   async function signin() {
     if (!bind.email || !bind.password || (bind.password != bind.repeatPassword)) return;
+    SplashScreen.loading = true;
+    AppModal.show('Signing in...')
     const { data, error } = await supabase.auth.signUp({
       email: bind.email,
       password: bind.password,
     });
     if (error) {
       console.error(error);
+      SplashScreen.loading = false;
     } else {
       if (data.user && data.user.email && data.user.id) {
         let auth = data.user;
         serverSignIn(data.user.id, data.user.email).then((user: any) => {
           assignUserToApp(user, auth);
+          SplashScreen.loading = false;
         });
       }
     }
@@ -110,17 +115,20 @@ export const LoginBind = (() => {
 
   async function login() {
     if (!bind.email || !bind.password) return;
+    SplashScreen.loading = true;
     const { data, error } = await supabase.auth.signInWithPassword({
       email: bind.email,
       password: bind.password,
     });
     if (error) {
       console.error(error);
+      SplashScreen.loading = false;
     } else {
       if (data.user) {
         let auth = data.user;
         getUserId(data.user.id).then((user) => {
           assignUserToApp(user, auth);
+          SplashScreen.loading = false;
         })
       }
     }
@@ -154,7 +162,6 @@ export const LoginBind = (() => {
       currentToken = await getToken(messaging, {
         vapidKey: WEB_PUSH_KEY
       });
-      console.log(currentToken);
       updateUserToken(ChatUpperBar._id, currentToken);
     } catch (error) {
       console.log('An error occurred while retrieving token.', error);
