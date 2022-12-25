@@ -88,11 +88,10 @@ export class GestureHandler {
   }
 
   private detector() {
-    if (Math.abs(this.distance.x) > 8 && !this.currentDirection && this.config.axis.indexOf('x') > -1) {
+    if (Math.abs(this.distance.x) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('x') > -1) {
       this.currentDirection = 'horizontal';
-
     }
-    if (Math.abs(this.distance.y) > 8 && !this.currentDirection && this.config.axis.indexOf('y') > -1) {
+    if (Math.abs(this.distance.y) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('y') > -1) {
       this.currentDirection = 'vertical';
     }
   }
