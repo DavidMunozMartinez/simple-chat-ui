@@ -119,7 +119,6 @@ export const ChatContacts = (() => {
       bind.activeChat = contact._id;
       ChatMessagesList.loadMessages(contact._id);
       ChatHeader.activeChatName = contact.name ? contact.name : contact.email;
-      // ChatContacts.hideContacts = true;
       localStorage.setItem('last-chat-selected', contact._id)
     }
   }

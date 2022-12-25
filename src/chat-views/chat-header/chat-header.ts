@@ -1,5 +1,4 @@
 import { Bind } from "bindrjs";
-import { ChatContacts } from "../../contacts-view/chat-contacts";
 import { LoginBind } from "../../login-view/login-view";
 import { ProfileBind } from "../../profile-view/profile-view";
 
@@ -11,18 +10,12 @@ export const ChatHeader = (() => {
       activeChatName: '',
       email: '',
       logout,
-      profile,
-      toggleContacts,
-
+      profile
     }
   });
 
   function profile() {
     ProfileBind.showProfile = !ProfileBind.showProfile
-  }
-
-  function toggleContacts() {
-    ChatContacts.hideContacts = !ChatContacts.hideContacts;
   }
 
   function logout() {

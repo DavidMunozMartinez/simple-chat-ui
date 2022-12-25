@@ -22,10 +22,10 @@ export class GestureHandler {
     'drag-start': [],
   };
 
-  private _config: GestureConfig = {
-    measureDistance: 8,
-    axis: ['x', 'y']
-  }
+  // private _config: GestureConfig = {
+  //   measureDistance: 8,
+  //   axis: ['x', 'y']
+  // }
   private initial = {
     x: 0,
     y: 0
@@ -36,7 +36,7 @@ export class GestureHandler {
   };
   private currentDirection: DragDirection | null = null;
 
-  constructor (element: HTMLElement, config?: GestureConfig) {
+  constructor (element: HTMLElement) {
     element.addEventListener('touchstart', (event: any) => {
       this.initial.x = event.pageX;
       this.initial.y = event.pageY;
@@ -65,9 +65,9 @@ export class GestureHandler {
       passive: true
     });
 
-    if (config) {
-      this._config = config;
-    }
+    // if (config) {
+    //   this._config = config;
+    // }
   }
 
   public on (event: TouchEventName, callback: (event: any) => void) {
