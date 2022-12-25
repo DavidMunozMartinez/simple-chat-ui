@@ -29,7 +29,7 @@ export function initWebSockets(_id: string) {
       switch (data.type) {
         case 'request-received':
           AppModal.show('New Friend Request!');
-          ChatContacts.requests.push(data as never);
+          ChatContacts.receivedRequests.push(data as never);
           break;
         case 'request-accepted':
           AppModal.show(data.email + ' accepted your firend request');

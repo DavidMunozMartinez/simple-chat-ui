@@ -1,19 +1,17 @@
 import { Bind } from "bindrjs";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { SplashScreen } from "../splash-screen/splash-screen";
-import { getMessagesBetweenUsers } from "../utils/server-handler";
-import "./chat-messages-list.scss";
+import { getMessagesBetweenUsers, Message } from "../utils/messages-server.service";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
 
-export const MessageLists: {[key: string]: any[]} = {};
-export const UnreadMessages: {[key: string]: any[]} = {};
+export const MessageLists: {[key: string]: Message[]} = {};
+export const UnreadMessages: {[key: string]: Message[]} = {};
 
 const ShortTimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' });
 const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'});
 let dateMarks: { [key: string]: boolean } = {};
-
 
 export const ChatMessagesList = (() => {
   const { bind } = new Bind({
@@ -52,14 +50,14 @@ export const ChatMessagesList = (() => {
     if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = '';
     dateMarks = {};
     if (!MessageLists[you]) {
-      getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: never[]) => {
+      getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: Message[]) => {
         if (UnreadMessages[you] && UnreadMessages[you].length) {
           MessageLists[you] = messages.concat(UnreadMessages[you] as any || []);
           UnreadMessages[you] = [];
         } else {
           MessageLists[you] = messages;
         }
-        messages.forEach((message: any) => {
+        messages.forEach((message: Message) => {
           let from = message.from === you ? you : undefined;
           appendMessage(message.message, new Date(message.createdAt), from);
         });
@@ -67,7 +65,7 @@ export const ChatMessagesList = (() => {
       });
     } else {
       if (UnreadMessages[you] && UnreadMessages[you].length) {
-        MessageLists[you] = MessageLists[you].concat(UnreadMessages[you] as any || []);
+        MessageLists[you] = MessageLists[you].concat(UnreadMessages[you] || []);
         UnreadMessages[you] = [];
       }
       MessageLists[you].forEach((message) => {
@@ -114,16 +112,7 @@ export function appendMessage(message: string, dateTime: Date, from?: string) {
   }
   let dateKey = ShortDateFormatter.format(dateTime);
   if (!dateMarks[dateKey]) {
-    let now = new Date();
-    dateMarks[dateKey] = true;
-    let marker = document.createElement("div");
-    marker.classList.add('message-container');
-    marker.classList.add('marker');
-    let dateText = dateKey === ShortDateFormatter.format(now) ? 'Today' : dateKey
-    marker.innerHTML = `
-      <p class="timestamp marker">${dateText}</p>
-    `;
-    ChatMessagesListRef?.insertBefore(marker, ChatMessagesListRef.firstChild)
+    insertTimeMarker(dateKey);
   }
 
   el.innerHTML = `
@@ -144,6 +133,19 @@ export function appendMessage(message: string, dateTime: Date, from?: string) {
       ChatMessagesListRef.style.overflowY = 'scroll'
     },200);
   });
+}
+
+function insertTimeMarker(dateKey: string) {
+  let now = new Date();
+  dateMarks[dateKey] = true;
+  let marker = document.createElement("div");
+  marker.classList.add('message-container');
+  marker.classList.add('marker');
+  let dateText = dateKey === ShortDateFormatter.format(now) ? 'Today' : dateKey
+  marker.innerHTML = `
+    <p class="timestamp marker">${dateText}</p>
+  `;
+  ChatMessagesListRef?.insertBefore(marker, ChatMessagesListRef.firstChild)
 }
 
 /**

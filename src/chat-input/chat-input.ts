@@ -3,8 +3,7 @@ import { ChatContacts } from "../chat-contacts/chat-contacts";
 import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages-list";
 import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { ProfileBind } from "../profile-view/profile-view";
-import { sendMessage } from "../utils/server-handler";
-import './chat-input.scss';
+import { Message, sendMessage } from "../utils/messages-server.service";
 
 export const ChatInput = (() => {
   const MessageInput = document.getElementById('message-input') as HTMLInputElement;
@@ -39,7 +38,7 @@ export const ChatInput = (() => {
         ChatContacts.activeChat,
         ProfileBind.displayName ? ProfileBind.displayName : ProfileBind.email,
         bind.inputValue
-      ).then((message: any) => {
+      ).then((message: Message) => {
         if (MessageLists[ChatContacts.activeChat]) {
           MessageLists[ChatContacts.activeChat].push(message);
         } else {

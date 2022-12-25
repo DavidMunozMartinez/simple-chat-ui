@@ -1,5 +1,5 @@
 #chat-ui,
-// This element is a replica of the chat ui, all messages get appended in 'trash' first so we
+// This element (#trash) is a replica of the chat ui, all messages get appended in 'trash' first so we
 // can calculate its height, then we can animate it from 0 to n to achieve a smooth bubble
 // append
 #trash {
@@ -70,7 +70,7 @@
       font-size: 14px;
     
       animation-name: appear;
-      animation-duration: 200ms;
+      animation-duration: 138ms;
       animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
       animation-iteration-count: 1;
 
@@ -139,7 +139,6 @@
     margin-left: 10px;
     margin-right: 10px;
     box-sizing: border-box;
-    // margin: 5px 20px;
     p {
       color: rgba(147, 147, 147);
     }

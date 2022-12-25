@@ -5,14 +5,14 @@ import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
 import { ProfileBind } from "../profile-view/profile-view";
 import { SplashScreen } from "../splash-screen/splash-screen";
 import { SUPABASE_URL, SUPABASE_KEY, WEB_PUSH_KEY } from "../utils/constants";
-import { getUserId, serverSignIn, updateUserToken } from "../utils/server-handler";
+import { AppUser, getUserId, updateUserToken } from "../utils/user-server.service";
 import { initWebSockets } from "../utils/ws-handler";
-import './login-view.scss';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage, Unsubscribe } from 'firebase/messaging';
 import { AppModal } from "../app-modal/app-moda";
+import { serverSignIn } from "../utils/server-handler";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -66,7 +66,7 @@ export const LoginBind = (() => {
       supabase.auth.getUser()
         .then((value: UserResponse) => {
           if (value.data && value.data.user && value.data.user.id) {
-            getUserId(value.data.user.id).then((user) => {
+            getUserId(value.data.user.id).then((user: AppUser) => {
               assignUserToApp(user, value.data.user as User);
             })
           } else {
@@ -141,17 +141,17 @@ export const LoginBind = (() => {
     });
   }
 
-  function assignUserToApp(user: any, auth: User) {
+  function assignUserToApp(user: AppUser, auth: User) {
     bind.activeSession = true;
     ChatUpperBar._id = user._id;
     if (auth.email) {
       ProfileBind.email = auth.email;
       ProfileBind.photo = '';
-      ProfileBind.displayName = user.name;
+      ProfileBind.displayName = user.name || '';
       ChatUpperBar.email = auth.email;
 
     }
-    (ChatContacts.loadContacts as any)(true);
+    ChatContacts.loadContacts(true);
     initWebSockets(user._id);
     initWebPush();
   }

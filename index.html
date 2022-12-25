@@ -117,7 +117,6 @@
         :onclick="this.hideContacts = !this.hideContacts">
         </i>
       </button>
-      <!-- <form action=""> -->
         <input
           type="text"
           id="message-input"
@@ -128,7 +127,6 @@
           :oninput="this.inputValue = event.target.value"
           :class:disabled="this.enabled"
           />
-      <!-- </form> -->
       <button id="send-button" :onclick="this.submitMessage()">
         <i class="iconoir-send"></i>
       </button>
@@ -137,11 +135,9 @@
     <div id="chat-contacts" :class:hide="this.hideContacts">
       <div class="search">
         <i class="iconoir-search"></i>
-        <!-- <form action=""> -->
           <input type="text" placeholder="Search frens..."
             :oninput="this.onSearchInput(event)"
             :onkeydown="this.onSearchInput(event)">
-        <!-- </form> -->
         <div class="search-results" :if="this.searchResults.length">
           <div
             class="result"
@@ -161,7 +157,7 @@
         <div class="tabs">
           <span :class:active="this.tab === 'friends'" :onclick="this.tab = 'friends'">Friends</span>
           <span :class:active="this.tab === 'requests'" :onclick="this.tab = 'requests'">
-            Friend Requests ${this.requests.length ? '(' + this.requests.length + ')' : ''}
+            Friend Requests ${this.receivedRequests.length ? '(' + this.receivedRequests.length + ')' : ''}
           </span>
           <span class="bottom"></span>
         </div>
@@ -191,7 +187,7 @@
         <div class="request-list" :if="this.tab === 'requests'">
           <div 
             class="request"
-            :foreach="request in this.requests">
+            :foreach="request in this.receivedRequests">
             <div class="avatar">
               <img :if="request.img" :src="request.img" alt="">
               <span :else><i class="iconoir-user"></i></span>
