@@ -1,15 +1,15 @@
-import { ChatInput } from './chat-input/chat-input';
-import { ChatMessagesList }  from './chat-messages-list/chat-messages-list'
-import { ChatUpperBar } from './chat-upper-bar/chat-upper-bar';
+import { ChatInput } from './chat-views/chat-input/chat-input';
+import { ChatMessagesList }  from './chat-views/chat-messages-list/chat-messages-list'
+import { ChatHeader } from './chat-views/chat-header/chat-header';
 import { LoginBind } from './login-view/login-view';
-import { ChatContacts } from './chat-contacts/chat-contacts';
-import { AppModal } from './app-modal/app-moda';
+import { ChatContacts } from './contacts-view/chat-contacts';
+import { AppModal } from './global-views/app-modal/app-modal';
 import { ProfileBind } from './profile-view/profile-view';
 
 LoginBind;
 ProfileBind;
 ChatInput;
 ChatMessagesList;
-ChatUpperBar;
+ChatHeader;
 ChatContacts;
 AppModal;

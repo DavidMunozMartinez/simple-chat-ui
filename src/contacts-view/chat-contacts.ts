@@ -1,10 +1,10 @@
 import { Bind } from "bindrjs"
-import { AppModal } from "../app-modal/app-moda";
-import { ChatMessagesList } from "../chat-messages-list/chat-messages-list";
-import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { SplashScreen } from "../splash-screen/splash-screen";
-import { DefaultResponse, queryGlobalContacts } from "../utils/server-handler";
-import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/user-server.service";
+import { AppModal } from "../global-views/app-modal/app-modal";
+import { ChatMessagesList } from "../chat-views/chat-messages-list/chat-messages-list";
+import { ChatHeader } from "../chat-views/chat-header/chat-header";
+import { SplashScreen } from "../global-views/splash-screen/splash-screen";
+import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
+import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
 
 export const ChatContacts = (() => {
   const { bind } = new Bind({
@@ -34,7 +34,7 @@ export const ChatContacts = (() => {
         if (results && results.length) {
           let ids = bind.contacts.map((contact: AppUser) => contact._id);
           let filtered = results.filter((res: AppUser) => {
-            return ids.indexOf(res._id) === -1 && res._id !== ChatUpperBar._id;
+            return ids.indexOf(res._id) === -1 && res._id !== ChatHeader._id;
           });
           bind.searchResults = filtered;
         } else {
@@ -61,7 +61,7 @@ export const ChatContacts = (() => {
         selectChat(result);
       }
     } else {
-      sendFriendRequest(ChatUpperBar._id, result._id).then(() => {
+      sendFriendRequest(ChatHeader._id, result._id).then(() => {
         AppModal.show('Sent a friend request to: ' + result.email);
         bind.searchResults = [];
       });
@@ -69,7 +69,7 @@ export const ChatContacts = (() => {
   }
 
   function acceptRequest(request: AppUser) {
-    acceptFriendRequest(request._id, ChatUpperBar._id).then((data: DefaultResponse) => {
+    acceptFriendRequest(request._id, ChatHeader._id).then((data: DefaultResponse) => {
       if (data.success) {
         AppModal.show('Accepted ' + request.email + ' request!');
         let index = bind.receivedRequests.indexOf(request);
@@ -82,8 +82,8 @@ export const ChatContacts = (() => {
 
   function loadContacts(autoSelectChat?: boolean) {
     let user = {
-      _id: ChatUpperBar._id,
-      email: ChatUpperBar.email,
+      _id: ChatHeader._id,
+      email: ChatHeader.email,
     };
 
     getUserContacts(user).then((contactData: UserContactsData) => {
@@ -113,7 +113,7 @@ export const ChatContacts = (() => {
     if (bind.activeChat !== contact._id) {
       bind.activeChat = contact._id;
       ChatMessagesList.loadMessages(contact._id);
-      ChatUpperBar.activeChatName = contact.name ? contact.name : contact.email;
+      ChatHeader.activeChatName = contact.name ? contact.name : contact.email;
       ChatContacts.hideContacts = true;
       localStorage.setItem('last-chat-selected', contact._id)
     }

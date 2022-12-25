@@ -1,45 +1,16 @@
 import { createClient, User, UserResponse } from "@supabase/supabase-js";
 import { Bind } from "bindrjs"
-import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
+import { ChatContacts } from "../contacts-view/chat-contacts";
+import { ChatHeader } from "../chat-views/chat-header/chat-header";
 import { ProfileBind } from "../profile-view/profile-view";
-import { SplashScreen } from "../splash-screen/splash-screen";
+import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { SUPABASE_URL, SUPABASE_KEY, WEB_PUSH_KEY } from "../utils/constants";
-import { AppUser, getUserId, updateUserToken } from "../utils/user-server.service";
+import { AppUser, getUserId, updateUserToken } from "../utils/server-services/user-server.service";
 import { initWebSockets } from "../utils/ws-handler";
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, MessagePayload, NotificationPayload, onMessage, Unsubscribe } from 'firebase/messaging';
-import { AppModal } from "../app-modal/app-moda";
-import { serverSignIn } from "../utils/server-handler";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBPQc7Y2scgOXCFzs_2guJXM6ZlfuaNO00",
-  authDomain: "simple-web-chat-64586.firebaseapp.com",
-  projectId: "simple-web-chat-64586",
-  storageBucket: "simple-web-chat-64586.appspot.com",
-  messagingSenderId: "727296131926",
-  appId: "1:727296131926:web:6943b05a173c42e69d8cf7"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-const unsubscribe: Unsubscribe = onMessage(messaging, (data: MessagePayload) => {
-  if (data.notification) {
-    const notification: NotificationPayload = data.notification;
-    new Notification(notification.title || 'Untitled', {
-      body: notification.body,
-      icon: notification.icon,
-      image: notification.image
-    });
-  }
-});
+import { AppModal } from "../global-views/app-modal/app-modal";
+import { serverSignIn } from "../utils/server-services/server-handler";
+import { messaging, unsubscribe } from "../utils/firebase-service";
+import { getToken } from "firebase/messaging";
 
 export const LoginBind = (() => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -143,12 +114,12 @@ export const LoginBind = (() => {
 
   function assignUserToApp(user: AppUser, auth: User) {
     bind.activeSession = true;
-    ChatUpperBar._id = user._id;
+    ChatHeader._id = user._id;
     if (auth.email) {
       ProfileBind.email = auth.email;
       ProfileBind.photo = '';
       ProfileBind.displayName = user.name || '';
-      ChatUpperBar.email = auth.email;
+      ChatHeader.email = auth.email;
 
     }
     ChatContacts.loadContacts(true);
@@ -162,7 +133,7 @@ export const LoginBind = (() => {
       currentToken = await getToken(messaging, {
         vapidKey: WEB_PUSH_KEY
       });
-      updateUserToken(ChatUpperBar._id, currentToken);
+      updateUserToken(ChatHeader._id, currentToken);
     } catch (error) {
       console.log('An error occurred while retrieving token.', error);
     }

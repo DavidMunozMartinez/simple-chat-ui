@@ -1,6 +1,6 @@
-import { AppModal } from "../app-modal/app-moda";
-import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { appendMessage, ChatMessagesList, MessageLists, UnreadMessages } from "../chat-messages-list/chat-messages-list";
+import { AppModal } from "../global-views/app-modal/app-modal";
+import { ChatContacts } from "../contacts-view/chat-contacts";
+import { appendMessage, ChatMessagesList, MessageLists, UnreadMessages } from "../chat-views/chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
 
 export function initWebSockets(_id: string) {

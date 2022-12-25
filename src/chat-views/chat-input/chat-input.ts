@@ -1,9 +1,9 @@
 import { Bind } from "bindrjs";
-import { ChatContacts } from "../chat-contacts/chat-contacts";
+import { ChatContacts } from "../../contacts-view/chat-contacts";
 import { appendMessage, MessageLists } from "../chat-messages-list/chat-messages-list";
-import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { ProfileBind } from "../profile-view/profile-view";
-import { Message, sendMessage } from "../utils/messages-server.service";
+import { ChatHeader } from "../chat-header/chat-header";
+import { ProfileBind } from "../../profile-view/profile-view";
+import { Message, sendMessage } from "../../utils/server-services/messages-server.service";
 
 export const ChatInput = (() => {
   const MessageInput = document.getElementById('message-input') as HTMLInputElement;
@@ -34,7 +34,7 @@ export const ChatInput = (() => {
       appendMessage(bind.inputValue, new Date());
       MessageInput.value = '';
       sendMessage(
-        ChatUpperBar._id,
+        ChatHeader._id,
         ChatContacts.activeChat,
         ProfileBind.displayName ? ProfileBind.displayName : ProfileBind.email,
         bind.inputValue

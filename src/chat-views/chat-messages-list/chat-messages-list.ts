@@ -1,7 +1,7 @@
 import { Bind } from "bindrjs";
-import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
-import { SplashScreen } from "../splash-screen/splash-screen";
-import { getMessagesBetweenUsers, Message } from "../utils/messages-server.service";
+import { ChatHeader } from "../chat-header/chat-header";
+import { SplashScreen } from "../../global-views/splash-screen/splash-screen";
+import { getMessagesBetweenUsers, Message } from "../../utils/server-services/messages-server.service";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
@@ -50,7 +50,7 @@ export const ChatMessagesList = (() => {
     if (ChatMessagesListRef) ChatMessagesListRef.innerHTML = '';
     dateMarks = {};
     if (!MessageLists[you]) {
-      getMessagesBetweenUsers(ChatUpperBar._id, you).then((messages: Message[]) => {
+      getMessagesBetweenUsers(ChatHeader._id, you).then((messages: Message[]) => {
         if (UnreadMessages[you] && UnreadMessages[you].length) {
           MessageLists[you] = messages.concat(UnreadMessages[you] as any || []);
           UnreadMessages[you] = [];
@@ -83,7 +83,7 @@ export const ChatMessagesList = (() => {
     let reloadContacts = Object.keys(MessageLists);
     reloadContacts.forEach((contactId) => {
       let lastMessageId = MessageLists[contactId][MessageLists[contactId].length - 1]._id;
-      getMessagesBetweenUsers(ChatUpperBar._id, contactId, lastMessageId).then((newMessages) => {
+      getMessagesBetweenUsers(ChatHeader._id, contactId, lastMessageId).then((newMessages) => {
         MessageLists[contactId] = MessageLists[contactId].concat(newMessages);
         newMessages.forEach((message: any) => {
           appendMessage(message.message, new Date(message.createdAt), contactId);

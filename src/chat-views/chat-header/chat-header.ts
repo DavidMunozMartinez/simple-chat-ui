@@ -1,9 +1,9 @@
 import { Bind } from "bindrjs";
-import { ChatContacts } from "../chat-contacts/chat-contacts";
-import { LoginBind } from "../login-view/login-view";
-import { ProfileBind } from "../profile-view/profile-view";
+import { ChatContacts } from "../../contacts-view/chat-contacts";
+import { LoginBind } from "../../login-view/login-view";
+import { ProfileBind } from "../../profile-view/profile-view";
 
-export const ChatUpperBar = (() => {
+export const ChatHeader = (() => {
   const { bind } = new Bind({
     id: 'chat-upper-bar',
     bind: {

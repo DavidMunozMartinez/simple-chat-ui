@@ -1,4 +1,4 @@
-import { API_URL } from "./constants";
+import { API_URL } from "../constants";
 
 export function sendMessage(from: string, to: string, title: string, message: string): Promise<Message> {
   const config: RequestInit = {

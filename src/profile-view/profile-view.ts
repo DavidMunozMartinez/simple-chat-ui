@@ -1,7 +1,7 @@
 import { Bind } from "bindrjs";
-import { ChatUpperBar } from "../chat-upper-bar/chat-upper-bar";
+import { ChatHeader } from "../chat-views/chat-header/chat-header";
 import { LoginBind } from "../login-view/login-view";
-import { updateUserProfile } from "../utils/user-server.service";
+import { updateUserProfile } from "../utils/server-services/user-server.service";
 
 export const ProfileBind = (() => {
   const { bind } = new Bind({
@@ -18,7 +18,7 @@ export const ProfileBind = (() => {
   });
 
   function updateProfile() {
-    updateUserProfile(ChatUpperBar._id, bind.displayName)
+    updateUserProfile(ChatHeader._id, bind.displayName)
   }
 
   function closeProfile() {

@@ -1,4 +1,4 @@
-import { API_URL } from './constants'
+import { API_URL } from '../constants'
 import { AppUser } from './user-server.service';
 
 export function serverSignIn(authId: string, email: string): Promise<string> {

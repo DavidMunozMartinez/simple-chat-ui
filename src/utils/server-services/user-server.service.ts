@@ -1,4 +1,4 @@
-import { API_URL } from "./constants";
+import { API_URL } from "../constants";
 import { DefaultResponse } from "./server-handler";
 
 export function getUserId(authId: string): Promise<AppUser> {
