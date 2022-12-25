@@ -2,19 +2,23 @@
 
 export type TouchEventName = 'drag-horizontal' | 'drag-vertical' | 'drag-end' | 'drag-start';
 export type DragDirection = 'horizontal' | 'vertical'; 
-export type EventCallback = (distance: DragDistance) => void;
+export type EventCallback = (distance: DragDistance, speed: DragSpeed) => void;
 export type DragDistance = {
   x: number;
   y: number;
 }
+export type DragSpeed = {
+  x: number;
+  y: number;
+}
 export type GestureConfig = {
+  // Number of pixels to travel before direction is determined
   measureDistance: number;
+  // Axis to listen to
   axis: ('x' | 'y')[];
 }
 
 export class GestureHandler {
-
-
   subscriptions: { [key in TouchEventName]: EventCallback[] } = {
     'drag-horizontal': [],
     'drag-vertical': [],
@@ -22,71 +26,80 @@ export class GestureHandler {
     'drag-start': [],
   };
 
-  // private _config: GestureConfig = {
-  //   measureDistance: 8,
-  //   axis: ['x', 'y']
-  // }
+  private speed = {
+    x: 0,
+    y: 0
+  };
   private initial = {
     x: 0,
     y: 0
   };
-  private current = {
+  private distance = {
     x: 0,
     y: 0,
   };
   private currentDirection: DragDirection | null = null;
 
+  private config: GestureConfig = {
+    measureDistance: 10,
+    axis: ['x', 'y']
+  }
+
   constructor (element: HTMLElement) {
+    let start: number = 0;
+    let end: number = 0;
     element.addEventListener('touchstart', (event: any) => {
+      start = new Date().getTime();
       this.initial.x = event.pageX;
       this.initial.y = event.pageY;
-      this.dispatcher('drag-start', this.current);
+      this.dispatcher('drag-start');
     }, {
       passive: true
     });
 
     element.addEventListener('touchmove', (event: any) => {
-      this.current.x = event.pageX - this.initial.x
-      this.current.y = event.pageY - this.initial.y
+      this.distance.x = event.pageX - this.initial.x
+      this.distance.y = event.pageY - this.initial.y
       this.detector();
       if (this.currentDirection) {
-        this.dispatcher(('drag-' + this.currentDirection) as TouchEventName, this.current);
+        this.dispatcher(('drag-' + this.currentDirection) as TouchEventName);
       }
-    }, {
-      passive: true
     });
 
     element.addEventListener('touchend', () => {
+      end = new Date().getTime();
+      const seconds = (end - start);
+      this.speed.x = Math.abs(this.distance.x) / seconds;
+      this.speed.y = Math.abs(this.distance.y) / seconds;
+
+      console.log(this.speed.x);
+  
       this.initial.x = 0;
       this.initial.y = 0;
       this.currentDirection = null;
-      this.dispatcher('drag-end', this.current);
+      this.dispatcher('drag-end');
     }, {
       passive: true
     });
-
-    // if (config) {
-    //   this._config = config;
-    // }
   }
 
-  public on (event: TouchEventName, callback: (event: any) => void) {
+  public on (event: TouchEventName, callback: (distance: DragDistance, speed: DragSpeed) => void) {
     this.subscriptions[event].push(callback)
   }
 
   private detector() {
-    if (Math.abs(this.current.x) > 8 && !this.currentDirection) {
+    if (Math.abs(this.distance.x) > 8 && !this.currentDirection && this.config.axis.indexOf('x') > -1) {
       this.currentDirection = 'horizontal';
 
     }
-    if (Math.abs(this.current.y) > 8 && !this.currentDirection) {
+    if (Math.abs(this.distance.y) > 8 && !this.currentDirection && this.config.axis.indexOf('y') > -1) {
       this.currentDirection = 'vertical';
     }
   }
 
-  private dispatcher(eventType: TouchEventName, distance: DragDistance) {
+  private dispatcher(eventType: TouchEventName) {
     this.subscriptions[eventType].forEach((callback) => {
-      callback(distance);
+      callback(this.distance, this.speed);
     });
   }
 }
