@@ -5,8 +5,10 @@ import { ChatHeader } from "../chat-views/chat-header/chat-header";
 import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
 import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
+import { GestureHandler } from "../utils/gesture-handler";
 
 export const ChatContacts = (() => {
+  const ChatContactsRef = document.getElementById('chat-contacts');
   const { bind } = new Bind({
     id: 'chat-contacts',
     bind: {
@@ -21,11 +23,14 @@ export const ChatContacts = (() => {
       receivedRequests: [] as AppUser[],
       sentRequests: [] as string[],
       searchResults: [] as AppUser[],
-      hideContacts: true,
-      tab: 'friends'
+      tab: 'friends',
+      transition: 'none',
+      transform: '',
+      left: ''
     },
   });
-  return bind;
+
+  addGestureHandler();
 
   function onSearchInput(event: KeyboardEvent) {
     bind.searchTerm = (event.target as HTMLInputElement).value;
@@ -114,8 +119,39 @@ export const ChatContacts = (() => {
       bind.activeChat = contact._id;
       ChatMessagesList.loadMessages(contact._id);
       ChatHeader.activeChatName = contact.name ? contact.name : contact.email;
-      ChatContacts.hideContacts = true;
+      // ChatContacts.hideContacts = true;
       localStorage.setItem('last-chat-selected', contact._id)
     }
   }
+
+  function addGestureHandler() {
+  if (ChatContactsRef) {
+    const animationTime = 138;
+    const Gestures = new GestureHandler(ChatContactsRef);
+    Gestures.on('drag-start', () => {
+      bind.transition = 'none';
+    });
+    Gestures.on('drag-horizontal', (distance) => {
+      if (distance.x < 0) {
+        bind.transform = `translateX(${distance.x}px)`;
+      }
+    });
+    Gestures.on('drag-end', (distance) => {
+      ChatContacts.transition = `transform ${animationTime}ms ease-in-out`;
+      if (distance.x < -200) {
+        bind.transform = `translateX(-100%)`;
+        bind.transition = `transform ${animationTime}ms ease-in-out`;
+        setTimeout(() => {
+          ChatContacts.transition = 'none';
+          ChatContacts.left = '-100%';
+          ChatContacts.transform = `translateX(0)`;
+        }, animationTime);
+      } else {
+        bind.transform = `translateX(0)`;
+      }
+    });
+  }
+  }
+
+  return bind;
 })();

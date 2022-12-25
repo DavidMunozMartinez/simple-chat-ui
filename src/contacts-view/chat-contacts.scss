@@ -3,12 +3,8 @@
   width: 400px;
   background: #222222;
   position: fixed;
-  left: 0;
   top: 0;
-  transition: transform 350ms ease-in-out;
-
   margin-top: env(safe-area-inset-top);
-
   .search {
     padding: 16px 32px;
     position: relative;
@@ -158,7 +154,6 @@
     }
   }
 
-
   .bottom-nav {
     bottom: 0;
     position: absolute;
@@ -177,5 +172,17 @@
     i {
       font-size: 32px;
     }
+  }
+}
+// Desktop
+@media only screen and (min-width: 700px)  {
+  #chat-contacts {
+    left: 0;
+  }
+}
+// Mobile
+@media only screen and (max-width: 700px)  {
+  #chat-contacts {
+    left: -100%;
   }
 }

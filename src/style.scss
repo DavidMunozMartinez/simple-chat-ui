@@ -50,15 +50,7 @@ button {
       }
     }
   }
-
-  #chat-contacts.hide {
-    transform: translateX(-100%);
-  }
 }
-
-
-
-// env(safe-area-inset-bottom, 0.5vh);
 
 @keyframes appear {
   0% {

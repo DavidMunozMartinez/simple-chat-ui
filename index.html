@@ -113,12 +113,12 @@
     <div id="chat-ui" tabindex="-1" :onscroll="this.CheckIfInView()"></div>
 
     <div id="chat-input">
-      <button class="toggle-contacts" :onclick="this.toggleContactList()">
+      <!-- <button class="toggle-contacts" :onclick="this.toggleContactList()">
         <i 
         class="iconoir-multi-bubble"
         :onclick="this.hideContacts = !this.hideContacts">
         </i>
-      </button>
+      </button> -->
         <input
           type="text"
           id="message-input"
@@ -134,7 +134,11 @@
       </button>
     </div>
 
-    <div id="chat-contacts" :class:hide="this.hideContacts">
+    <div
+      id="chat-contacts"
+      :style:transform="this.transform"
+      :style:transition="this.transition"
+      :style:left="this.left">
       <div class="search">
         <i class="iconoir-search"></i>
           <input type="text" placeholder="Search frens..."
@@ -208,9 +212,9 @@
 
 
       <div class="bottom-nav">
-        <span :onclick="this.hideContacts = true">
+        <!-- <span :onclick="this.hideContacts = true">
           <i class="iconoir-nav-arrow-left"></i>
-        </span>
+        </span> -->
       </div>
 
     </div>

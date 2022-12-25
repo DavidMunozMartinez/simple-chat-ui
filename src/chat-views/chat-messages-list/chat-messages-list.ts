@@ -2,6 +2,8 @@ import { Bind } from "bindrjs";
 import { ChatHeader } from "../chat-header/chat-header";
 import { SplashScreen } from "../../global-views/splash-screen/splash-screen";
 import { getMessagesBetweenUsers, Message } from "../../utils/server-services/messages-server.service";
+import { GestureHandler } from "../../utils/gesture-handler";
+import { ChatContacts } from "../../contacts-view/chat-contacts";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
@@ -14,6 +16,7 @@ const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium
 let dateMarks: { [key: string]: boolean } = {};
 
 export const ChatMessagesList = (() => {
+
   const { bind } = new Bind({
     id: "chat-ui",
     bind: {
@@ -23,6 +26,7 @@ export const ChatMessagesList = (() => {
     },
   });
 
+  addGestureHandler();
   /**
    * Iterates over the chat messages and assigns a class when the element
    * is out of bounds to help animate when the message is in-bounds again
@@ -90,6 +94,32 @@ export const ChatMessagesList = (() => {
         });
       });
     });
+  }
+
+  function addGestureHandler() {
+    if (ChatMessagesListRef) {
+      const animationTime = 138;
+      const Gestures = new GestureHandler(ChatMessagesListRef);
+      Gestures.on('drag-start', () => {
+        ChatContacts.transition = 'none';
+      });
+      Gestures.on('drag-horizontal', (distance) => {
+        ChatContacts.transform = `translateX(${distance.x}px)`;
+      });
+      Gestures.on('drag-end', (distance) => {
+        ChatContacts.transition = `transform ${animationTime}ms ease-in-out`;
+        if (distance.x > 200) {
+          ChatContacts.transform = `translateX(100%)`;
+          setTimeout(() => {
+            ChatContacts.transition = 'none';
+            ChatContacts.left = '0px';
+            ChatContacts.transform = `translateX(0)`;
+          }, animationTime);
+        } else {
+          ChatContacts.transform = `translateX(0)`;
+        }
+      });
+    }
   }
 
   return bind;
