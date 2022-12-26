@@ -41,7 +41,7 @@ export class GestureHandler {
   private currentDirection: DragDirection | null = null;
 
   private config: GestureConfig = {
-    measureDistance: 20,
+    measureDistance: 8,
     axis: ['x', 'y']
   }
   private container!: HTMLElement;
