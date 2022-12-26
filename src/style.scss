@@ -29,13 +29,12 @@ button {
 
 .chat-list-container {
   position: fixed;
-  top: 60px;
+  top: calc(60px + env(safe-area-inset-top));
   right: 0;
-  height: calc(100% - 60px);
+  height: calc(100% - 60px - env(safe-area-inset-top));
   width: calc(100% - 400px);
   display: flex;
   flex-direction: column;
-  // width: ;
 }
 
 @media only screen and (max-width: 700px)  {

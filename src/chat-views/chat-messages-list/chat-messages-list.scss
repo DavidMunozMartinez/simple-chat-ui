@@ -13,6 +13,7 @@
 }
 
 #chat-ui {
+  height: -webkit-fill-available;
   .message-container {
     cursor: pointer;
     display: inline-block;
