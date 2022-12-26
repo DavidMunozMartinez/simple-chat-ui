@@ -107,8 +107,9 @@ export const ChatMessagesList = (() => {
         ChatContacts.transform = `translateX(${distance.x}px)`;
       });
       Gestures.on('drag-end', (distance, speed) => {
+        console.log(distance.x, speed.x);
         ChatContacts.transition = `transform ${animationTime}ms ease-in-out`;
-        if (distance.x > 300 || (speed.x > 0.35 && distance.x > 50)) {
+        if (distance.x > 300 || (speed.x > 0.4 && distance.x > 50)) {
           ChatContacts.transform = `translateX(100%)`;
           setTimeout(() => {
             ChatContacts.transition = 'none';
@@ -118,6 +119,7 @@ export const ChatMessagesList = (() => {
         } else {
           ChatContacts.transform = `translateX(0)`;
         }
+
       });
     }
   }

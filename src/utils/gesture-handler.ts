@@ -41,7 +41,7 @@ export class GestureHandler {
   private currentDirection: DragDirection | null = null;
 
   private config: GestureConfig = {
-    measureDistance: 10,
+    measureDistance: 14,
     axis: ['x', 'y']
   }
   private container!: HTMLElement;
@@ -74,11 +74,11 @@ export class GestureHandler {
       this.speed.x = Math.abs(this.distance.x) / seconds;
       this.speed.y = Math.abs(this.distance.y) / seconds;
   
-      this.initial.x = 0;
-      this.initial.y = 0;
+      this.dispatcher('drag-end');
+      this.initial.x = this.distance.x = 0;
+      this.initial.y = this.distance.y = 0;
       this.currentDirection = null;
       this.container.style.overflowY = 'scroll';
-      this.dispatcher('drag-end');
     }, {
       passive: true
     });
@@ -89,7 +89,9 @@ export class GestureHandler {
   }
 
   private detector() {
-    if (Math.abs(this.distance.x) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('x') > -1) {
+    let passesXTreshold = Math.abs(this.distance.x) > this.config.measureDistance;
+    let isXEnabled = this.config.axis.indexOf('x') > -1;
+    if (passesXTreshold && !this.currentDirection && isXEnabled) {
       this.currentDirection = 'horizontal';
       this.container.style.overflowY = 'hidden';
     }
