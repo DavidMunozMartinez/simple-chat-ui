@@ -119,37 +119,43 @@ export const ChatContacts = (() => {
       bind.activeChat = contact._id;
       ChatMessagesList.loadMessages(contact._id);
       ChatHeader.activeChatName = contact.name ? contact.name : contact.email;
-      localStorage.setItem('last-chat-selected', contact._id)
+      localStorage.setItem('last-chat-selected', contact._id);
     }
+    closeContacts();
   }
 
   function addGestureHandler() {
-  if (ChatContactsRef) {
-    const animationTime = 138;
-    const Gestures = new GestureHandler(ChatContactsRef);
-    Gestures.on('drag-start', () => {
-      bind.transition = 'none';
-    });
-    Gestures.on('drag-horizontal', (distance) => {
-      if (distance.x < 0) {
-        bind.transform = `translateX(${distance.x}px)`;
-      }
-    });
-    Gestures.on('drag-end', (distance, speed) => {
-      ChatContacts.transition = `transform ${animationTime}ms ease-in-out`;
-      if (distance.x < -300 || (speed.x > 0.3 && distance.x < -50)) {
-        bind.transform = `translateX(-100%)`;
-        bind.transition = `transform ${animationTime}ms ease-in-out`;
-        setTimeout(() => {
-          ChatContacts.transition = 'none';
-          ChatContacts.left = '-100%';
-          ChatContacts.transform = `translateX(0)`;
-        }, animationTime);
-      } else {
-        bind.transform = `translateX(0)`;
-      }
-    });
+    if (ChatContactsRef) {
+      const animationTime = 138;
+      const Gestures = new GestureHandler(ChatContactsRef);
+      Gestures.on('drag-start', () => {
+        bind.transition = 'none';
+      });
+      Gestures.on('drag-horizontal', (distance) => {
+        if (distance.x < 0) {
+          bind.transform = `translateX(${distance.x}px)`;
+        }
+      });
+      Gestures.on('drag-end', (distance, speed) => {
+        ChatContacts.transition = `transform ${animationTime}ms ease-in-out`;
+        if (distance.x < -300 || (speed.x > 0.3 && distance.x < -50)) {
+          closeContacts();
+        } else {
+          bind.transform = `translateX(0)`;
+        }
+      });
+    }
   }
+
+  function closeContacts() {
+    const animationTime = 138;
+    bind.transform = `translateX(-100%)`;
+    bind.transition = `transform ${animationTime}ms ease-in-out`;
+    setTimeout(() => {
+      ChatContacts.transition = 'none';
+      ChatContacts.left = '-100%';
+      ChatContacts.transform = `translateX(0)`;
+    }, animationTime);
   }
 
   return bind;

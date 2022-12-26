@@ -16,6 +16,7 @@ export type GestureConfig = {
   measureDistance: number;
   // Axis to listen to
   axis: ('x' | 'y')[];
+  leftArea: number;
 }
 
 export class GestureHandler {
@@ -42,7 +43,8 @@ export class GestureHandler {
 
   private config: GestureConfig = {
     measureDistance: 8,
-    axis: ['x', 'y']
+    axis: ['x', 'y'],
+    leftArea: 50
   }
   private container!: HTMLElement;
 
@@ -95,7 +97,10 @@ export class GestureHandler {
       this.currentDirection = 'horizontal';
       this.container.style.overflowY = 'hidden';
     }
-    if (Math.abs(this.distance.y) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('y') > -1) {
+
+    let passesYTreshold = Math.abs(this.distance.y) > this.config.measureDistance;
+    let isYEnabled = this.config.axis.indexOf('y') > -1;
+    if (passesYTreshold && !this.currentDirection && isYEnabled) {
       this.currentDirection = 'vertical';
     }
   }
