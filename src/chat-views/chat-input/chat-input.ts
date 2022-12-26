@@ -21,12 +21,16 @@ export const ChatInput = (() => {
     if (event.key === 'Enter') {
       submitMessage();
     }
+    // iOS thing
+    if (!MessageInput.innerText.trim()) {
+      MessageInput.innerText = '';
+    }
   }
 
   function submitMessage() {
     if (bind.inputValue.trim() && ChatContacts.activeChat && ChatContacts.activeChat.trim()) {
       appendMessage(bind.inputValue, new Date());
-      MessageInput.value = '';
+      MessageInput.innerText = '';
       sendMessage(
         ChatHeader._id,
         ChatContacts.activeChat,
@@ -39,7 +43,7 @@ export const ChatInput = (() => {
           MessageLists[ChatContacts.activeChat] = [message];
         }
         bind.inputValue = '';
-      })
+      });
     }
   }
 

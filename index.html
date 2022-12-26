@@ -110,22 +110,28 @@
       </span>
     </div>
 
-    <div id="chat-ui" tabindex="-1" :onscroll="this.CheckIfInView()"></div>
+    <div class="chat-list-container">
+      <div id="chat-ui" tabindex="-1" :onscroll="this.CheckIfInView()"></div>
 
-    <div id="chat-input">
-        <input
-          type="text"
+      <div id="chat-input">
+        <span
           id="message-input"
-          autofocus
           placeholder="Send a message..."
+          contenteditable="true"
           :onkeydown="this.onInputKeydown(event)"
-          :value="this.inputValue"
-          :oninput="this.inputValue = event.target.value"
+          :oninput="this.inputValue = event.target.innerText"
           :class:disabled="this.enabled"
-          />
-      <button id="send-button" :onclick="this.submitMessage()">
-        <i class="iconoir-send"></i>
-      </button>
+        ></span>
+          <!-- <input
+            type="text"
+            autofocus
+            placeholder="Send a message..."
+            :value="this.inputValue"
+            /> -->
+        <button id="send-button" :onclick="this.submitMessage()">
+          <i class="iconoir-send"></i>
+        </button>
+      </div>
     </div>
 
     <div

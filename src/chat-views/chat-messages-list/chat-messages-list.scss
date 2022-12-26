@@ -3,26 +3,16 @@
 // can calculate its height, then we can animate it from 0 to n to achieve a smooth bubble
 // append
 #trash {
-  position: absolute;
-  bottom: (60px);
   padding: 8px;
   background-color: rgb(41, 41, 41);
-  max-height: 
-    calc(100% - (120px + env(safe-area-inset-top)));
-
+  width: 100%;
   display: flex;
   flex-direction: column-reverse;
-  
   box-sizing: border-box;
   overflow-y: scroll;
-
-  right: 0;
-  width: calc(100% - 400px);
 }
 
 #chat-ui {
-  height: 
-    calc(100% - (120px + env(safe-area-inset-top)));
   .message-container {
     cursor: pointer;
     display: inline-block;

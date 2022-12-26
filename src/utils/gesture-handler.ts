@@ -71,8 +71,6 @@ export class GestureHandler {
       const seconds = (end - start);
       this.speed.x = Math.abs(this.distance.x) / seconds;
       this.speed.y = Math.abs(this.distance.y) / seconds;
-
-      console.log(this.speed.x);
   
       this.initial.x = 0;
       this.initial.y = 0;

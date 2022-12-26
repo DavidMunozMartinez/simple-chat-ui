@@ -27,10 +27,22 @@ button {
   height: 0;
 }
 
+.chat-list-container {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  height: calc(100% - 60px);
+  width: calc(100% - 400px);
+  display: flex;
+  flex-direction: column;
+  // width: ;
+}
+
 @media only screen and (max-width: 700px)  {
   #chat-upper-bar,
   #chat-ui,
-  #chat-input {
+  #chat-input,
+  .chat-list-container {
     width: 100% !important;
     right: 0;
     border-left: none !important;
