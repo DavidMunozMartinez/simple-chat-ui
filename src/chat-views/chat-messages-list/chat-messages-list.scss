@@ -4,7 +4,6 @@
 // append
 #trash {
   padding: 8px;
-  background-color: rgb(41, 41, 41);
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
@@ -13,6 +12,7 @@
 }
 
 #chat-ui {
+  background-color: rgb(41, 41, 41);
   height: -webkit-fill-available;
   .message-container {
     cursor: pointer;

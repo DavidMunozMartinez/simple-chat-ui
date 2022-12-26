@@ -44,10 +44,12 @@ export class GestureHandler {
     measureDistance: 10,
     axis: ['x', 'y']
   }
+  private container!: HTMLElement;
 
   constructor (element: HTMLElement) {
     let start: number = 0;
     let end: number = 0;
+    this.container = element;
     element.addEventListener('touchstart', (event: any) => {
       start = new Date().getTime();
       this.initial.x = event.pageX;
@@ -75,6 +77,7 @@ export class GestureHandler {
       this.initial.x = 0;
       this.initial.y = 0;
       this.currentDirection = null;
+      this.container.style.overflowY = 'scroll';
       this.dispatcher('drag-end');
     }, {
       passive: true
@@ -88,6 +91,7 @@ export class GestureHandler {
   private detector() {
     if (Math.abs(this.distance.x) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('x') > -1) {
       this.currentDirection = 'horizontal';
+      this.container.style.overflowY = 'hidden';
     }
     if (Math.abs(this.distance.y) > this.config.measureDistance && !this.currentDirection && this.config.axis.indexOf('y') > -1) {
       this.currentDirection = 'vertical';
