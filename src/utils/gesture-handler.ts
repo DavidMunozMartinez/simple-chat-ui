@@ -50,12 +50,10 @@ export class GestureHandler {
     axis: ['x', 'y'],
     leftArea: 50
   }
-  // private container!: HTMLElement;
 
   constructor (element: HTMLElement) {
     let start: number = 0;
     let end: number = 0;
-    // this.container = element;
     element.addEventListener('touchstart', (event: any) => {
       start = new Date().getTime();
       let x = event.pageX || event.touches[0].pageX;
@@ -65,7 +63,7 @@ export class GestureHandler {
       this.initial.y = y;
       this.dispatcher('drag-start');
     }, {
-      passive: true
+      passive: false
     });
 
     element.addEventListener('touchmove', (event: any) => {
@@ -77,7 +75,10 @@ export class GestureHandler {
       if (this.currentDirection) {
         this.dispatcher(('drag-' + this.currentDirection) as TouchEventName);
       }
-    });
+      if (this.currentDirection === 'horizontal') event.preventDefault();
+    }, {
+      passive: false,
+    })
 
     element.addEventListener('touchend', () => {
       end = new Date().getTime();
@@ -90,7 +91,7 @@ export class GestureHandler {
       this.initial.y = this.distance.y = 0;
       this.currentDirection = null;
     }, {
-      passive: true
+      passive: false
     });
   }
 
