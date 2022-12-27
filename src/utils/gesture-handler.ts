@@ -58,16 +58,21 @@ export class GestureHandler {
     // this.container = element;
     element.addEventListener('touchstart', (event: any) => {
       start = new Date().getTime();
-      this.initial.x = event.pageX;
-      this.initial.y = event.pageY;
+      let x = event.pageX || event.touches[0].pageX;
+      let y = event.pageY || event.touches[0].pageY;
+
+      this.initial.x = x;
+      this.initial.y = y;
       this.dispatcher('drag-start');
     }, {
       passive: true
     });
 
     element.addEventListener('touchmove', (event: any) => {
-      this.distance.x = event.pageX - this.initial.x
-      this.distance.y = event.pageY - this.initial.y
+      let x = event.pageX || event.touches[0].pageX;
+      let y = event.pageY || event.touches[0].pageY;
+      this.distance.x = x - this.initial.x
+      this.distance.y = y - this.initial.y
       this.detector();
       if (this.currentDirection) {
         this.dispatcher(('drag-' + this.currentDirection) as TouchEventName);
@@ -96,13 +101,13 @@ export class GestureHandler {
   private detector() {
     let passesXTreshold = Math.abs(this.distance.x) > this.config.measureDistance;
     let isXEnabled = this.config.axis.indexOf('x') > -1;
-    if (passesXTreshold && !this.currentDirection && isXEnabled && this.distance.x > (this.distance.y + 20)) {
+    if (passesXTreshold && !this.currentDirection && isXEnabled && Math.abs(this.distance.x) > (Math.abs(this.distance.y) + this.config.measureDistance)) {
       this.currentDirection = 'horizontal';
     }
 
     let passesYTreshold = Math.abs(this.distance.y) > this.config.measureDistance;
     let isYEnabled = this.config.axis.indexOf('y') > -1;
-    if (passesYTreshold && !this.currentDirection && isYEnabled && this.distance.y > (this.distance.x + 20)) {
+    if (passesYTreshold && !this.currentDirection && isYEnabled && Math.abs(this.distance.y) > (Math.abs(this.distance.x) + this.config.measureDistance)) {
       this.currentDirection = 'vertical';
     }
   }
