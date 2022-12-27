@@ -1,13 +1,17 @@
 
 
-export type TouchEventName = 'drag-horizontal' | 'drag-vertical' | 'drag-end' | 'drag-start';
+export type TouchEventName = 
+  'drag-horizontal' | 
+  'drag-vertical' | 
+  'drag-end' | 
+  'drag-start';
 export type DragDirection = 'horizontal' | 'vertical'; 
 export type EventCallback = (distance: DragDistance, speed: DragSpeed) => void;
 export type DragDistance = {
   x: number;
   y: number;
 }
-export type DragSpeed = {
+export type DragSpeed /** pixels per ms */ = {
   x: number;
   y: number;
 }
@@ -42,16 +46,16 @@ export class GestureHandler {
   private currentDirection: DragDirection | null = null;
 
   private config: GestureConfig = {
-    measureDistance: 8,
+    measureDistance: 10,
     axis: ['x', 'y'],
     leftArea: 50
   }
-  private container!: HTMLElement;
+  // private container!: HTMLElement;
 
   constructor (element: HTMLElement) {
     let start: number = 0;
     let end: number = 0;
-    this.container = element;
+    // this.container = element;
     element.addEventListener('touchstart', (event: any) => {
       start = new Date().getTime();
       this.initial.x = event.pageX;
@@ -80,7 +84,6 @@ export class GestureHandler {
       this.initial.x = this.distance.x = 0;
       this.initial.y = this.distance.y = 0;
       this.currentDirection = null;
-      this.container.style.overflowY = 'scroll';
     }, {
       passive: true
     });
@@ -93,14 +96,13 @@ export class GestureHandler {
   private detector() {
     let passesXTreshold = Math.abs(this.distance.x) > this.config.measureDistance;
     let isXEnabled = this.config.axis.indexOf('x') > -1;
-    if (passesXTreshold && !this.currentDirection && isXEnabled) {
+    if (passesXTreshold && !this.currentDirection && isXEnabled && this.distance.x > (this.distance.y + 20)) {
       this.currentDirection = 'horizontal';
-      this.container.style.overflowY = 'hidden';
     }
 
     let passesYTreshold = Math.abs(this.distance.y) > this.config.measureDistance;
     let isYEnabled = this.config.axis.indexOf('y') > -1;
-    if (passesYTreshold && !this.currentDirection && isYEnabled) {
+    if (passesYTreshold && !this.currentDirection && isYEnabled && this.distance.y > (this.distance.x + 20)) {
       this.currentDirection = 'vertical';
     }
   }
