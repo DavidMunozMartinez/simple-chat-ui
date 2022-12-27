@@ -6,6 +6,7 @@ import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
 import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
 import { GestureHandler } from "../utils/gesture-handler";
+import { MobileMediaQuery } from "../utils/utils";
 
 export const ChatContacts = (() => {
   const ChatContactsRef = document.getElementById('chat-contacts');
@@ -125,7 +126,7 @@ export const ChatContacts = (() => {
   }
 
   function addGestureHandler() {
-    if (ChatContactsRef) {
+    if (ChatContactsRef && MobileMediaQuery.matches) {
       const animationTime = 138;
       const Gestures = new GestureHandler(ChatContactsRef);
       Gestures.on('drag-start', () => {
@@ -148,6 +149,7 @@ export const ChatContacts = (() => {
   }
 
   function closeContacts() {
+    if (!MobileMediaQuery.matches) return;
     const animationTime = 138;
     bind.transform = `translateX(-100%)`;
     bind.transition = `transform ${animationTime}ms ease-in-out`;

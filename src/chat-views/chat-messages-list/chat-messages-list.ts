@@ -4,6 +4,7 @@ import { SplashScreen } from "../../global-views/splash-screen/splash-screen";
 import { getMessagesBetweenUsers, Message } from "../../utils/server-services/messages-server.service";
 import { GestureHandler } from "../../utils/gesture-handler";
 import { ChatContacts } from "../../contacts-view/chat-contacts";
+import { MobileMediaQuery } from "../../utils/utils";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
@@ -16,7 +17,6 @@ const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium
 let dateMarks: { [key: string]: boolean } = {};
 
 export const ChatMessagesList = (() => {
-
   const { bind } = new Bind({
     id: "chat-ui",
     bind: {
@@ -97,7 +97,7 @@ export const ChatMessagesList = (() => {
   }
 
   function addGestureHandler() {
-    if (ChatMessagesListRef) {
+    if (ChatMessagesListRef && MobileMediaQuery.matches) {
       const animationTime = 138;
       const Gestures = new GestureHandler(ChatMessagesListRef);
       Gestures.on('drag-start', () => {
