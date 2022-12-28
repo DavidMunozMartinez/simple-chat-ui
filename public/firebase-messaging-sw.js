@@ -22,7 +22,7 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = notification.title || 'Untitled';
     const notificationOptions = {
       body: notification.body,
-      icon: 'https://simple-chat-ui.vercel.app/icon-x120.png',
+      icon: '/icon-x120.png',
       // image: notification.image,
       timestamp: Date.now(),
       tag: payload.data.tag,
