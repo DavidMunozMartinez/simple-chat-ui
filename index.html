@@ -37,59 +37,64 @@
 
         <div class="tab-content">
           <div :if="this.activeHeader === 'Login'">
-
-            <label for="email">Email: </label>
-            <input type="email"
-              :onkeydown="this.loginKeyListener(event)"
-              :oninput="this.email = event.target.value">
-
-            <label for="password">
-              <span>Password: </span>
-              <i
-                :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
-                :onclick="this.showPassword = !this.showPassword">
-              </i>
-            </label>
-            <input
-              :type="this.showPassword ? 'text' : 'password' "
-              :onkeydown="this.loginKeyListener(event)"
-              :oninput="this.password = event.target.value">
+            <form>
+              <label for="email">Email: </label>
+              <input type="email"
+                autocomplete="username"
+                :onkeydown="this.loginKeyListener(event)"
+                :oninput="this.email = event.target.value">
+  
+              <label for="password">
+                <span>Password: </span>
+                <i
+                  :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
+                  :onclick="this.showPassword = !this.showPassword">
+                </i>
+              </label>
+              <input
+                autocomplete="current-password"
+                :type="this.showPassword ? 'text' : 'password' "
+                :onkeydown="this.loginKeyListener(event)"
+                :oninput="this.password = event.target.value">
+            </form>
 
             <button :onclick="this.login()">Login</button>
           </div>
           <div :if="this.activeHeader === 'Sign in'">
-            <label for="email">Email: </label>
-            <input
-              type="email"
-              :onkeydown="this.signinKeyListener(event)"
-              :oninput="this.email = event.target.value">
-
-            <label for="password">
-              Password:
+            <form>
+              <label for="email">Email: </label>
+              <input
+                type="email"
+                autocomplete="username"
+                :onkeydown="this.signinKeyListener(event)"
+                :oninput="this.email = event.target.value">
+  
+              <label for="password">
+                Password:
+                  <i
+                  :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
+                  style="display: inline-block;"
+                  :onclick="this.showPassword = !this.showPassword">
+                </i>
+              </label>
+              <input
+                :type="this.showPassword ? 'text' : 'password' "
+                :onkeydown="this.signinKeyListener(event)"
+                :oninput="this.password = event.target.value">
+  
+  
+              <label for="re-passwor">
+                Repeat Password:
                 <i
-                :class="'iconoir-eye-' + (this.showPassword ? 'empty' : 'off')"
-                style="display: inline-block;"
-                :onclick="this.showPassword = !this.showPassword">
+                :class="'iconoir-eye-' + (this.showRepeatPassword ? 'empty' : 'off')"
+                :onclick="this.showRepeatPassword = !this.showRepeatPassword">
               </i>
-            </label>
-            <input
-              :type="this.showPassword ? 'text' : 'password' "
-              :onkeydown="this.signinKeyListener(event)"
-              :oninput="this.password = event.target.value">
-
-
-            <label for="re-passwor">
-              Repeat Password:
-              <i
-              :class="'iconoir-eye-' + (this.showRepeatPassword ? 'empty' : 'off')"
-              :onclick="this.showRepeatPassword = !this.showRepeatPassword">
-            </i>
-            </label>
-            <input
-              :type="this.showRepeatPassword ? 'text' : 'password' "
-              :onkeydown="this.signinKeyListener(event)"
-              :oninput="this.repeatPassword = event.target.value">
-
+              </label>
+              <input
+                :type="this.showRepeatPassword ? 'text' : 'password' "
+                :onkeydown="this.signinKeyListener(event)"
+                :oninput="this.repeatPassword = event.target.value">
+            </form>
 
             <button :onclick="this.signin()">Sign In</button>
           </div>
