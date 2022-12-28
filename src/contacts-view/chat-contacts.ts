@@ -6,7 +6,7 @@ import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
 import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
 import { GestureHandler } from "../utils/gesture-handler";
-import { MobileMediaQuery, ShortDateFormatter } from "../utils/utils";
+import { MobileMediaQuery, prettyDate, ShortDateFormatter } from "../utils/utils";
 import { Message } from "../utils/server-services/messages-server.service";
 
 type Contact = AppUser & {
@@ -172,7 +172,7 @@ export const ChatContacts = (() => {
     let contact = bind.contacts.find(contact => contact._id === message.from || contact._id === message.to)
     if (contact) {
       contact.lastMessage = message;
-      contact.lastMessage.prettyDate = ShortDateFormatter.format(new Date(message.createdAt));
+      contact.lastMessage.prettyDate = prettyDate(new Date(message.createdAt));
     }
     bind.contacts.sort((a, b) => {
       if (a.lastMessage && b .lastMessage) {
@@ -197,7 +197,7 @@ export const ChatContacts = (() => {
 
     bind.contacts.forEach((contact) => {
       if (contact.lastMessage) {
-        contact.lastMessage.prettyDate = ShortDateFormatter.format(new Date(contact.lastMessage.createdAt))
+        contact.lastMessage.prettyDate = prettyDate(new Date(contact.lastMessage.createdAt))
       }
     });
   }
