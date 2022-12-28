@@ -100,8 +100,7 @@
     <div id="chat-upper-bar">
       <span class="active-chat">
         <i 
-          class="iconoir-user"
-          :onclick="this.toggleContacts()">
+          class="iconoir-user">
         </i>
         <span>${this.activeChatName}</span>
       </span>
@@ -174,11 +173,13 @@
             </div>
   
             <div class="display-text">
-              <div class="display-name">
-                ${contact.name}
+              <div class="contact-name">
+                <span :if="contact.name" class="display-name">${contact.name}</span>
+                <span class="email" :class:secondary="!!contact.name">${contact.email}</span>
               </div>
-              <div class="email" :class:secondary="!!contact.name">
-                ${contact.email}
+              <div class="last-message">
+                <span class="text">${contact.lastMessage.message}</span>
+                <span class="date">${contact.lastMessage.prettyDate}</span>
               </div>
             </div>
           </div>

@@ -43,6 +43,7 @@ export const ChatInput = (() => {
           MessageLists[ChatContacts.activeChat] = [message];
         }
         bind.inputValue = '';
+        ChatContacts.updateLastMessage(message);
       });
     }
   }

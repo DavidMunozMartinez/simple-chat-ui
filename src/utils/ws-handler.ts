@@ -2,6 +2,7 @@ import { AppModal } from "../global-views/app-modal/app-modal";
 import { ChatContacts } from "../contacts-view/chat-contacts";
 import { appendMessage, ChatMessagesList, MessageLists, UnreadMessages } from "../chat-views/chat-messages-list/chat-messages-list";
 import { IS_LOCAL, SERVER } from "./constants";
+import { Message } from "./server-services/messages-server.service";
 
 export function initWebSockets(_id: string) {
   let ws: WebSocket;
@@ -16,14 +17,15 @@ export function initWebSockets(_id: string) {
   ws.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if (!data.type) {
-      const { message, from, createdAt } = JSON.parse(event.data);
-      if (ChatContacts.activeChat === from) {
-        appendMessage(message, new Date(createdAt), from);
-        MessageLists[from].push(JSON.parse(event.data));
+      const message: Message = JSON.parse(event.data);
+      if (ChatContacts.activeChat === message.from) {
+        appendMessage(message.message, new Date(message.createdAt), message.from);
+        MessageLists[message.from].push(JSON.parse(event.data));
       } else {
-        if (!UnreadMessages[from]) UnreadMessages[from] = [];
-        UnreadMessages[from].push(JSON.parse(event.data));
+        if (!UnreadMessages[message.from]) UnreadMessages[message.from] = [];
+        UnreadMessages[message.from].push(JSON.parse(event.data));
       }
+      ChatContacts.updateLastMessage(message)
 
     } else {
       switch (data.type) {

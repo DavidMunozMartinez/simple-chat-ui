@@ -4,7 +4,7 @@ import { SplashScreen } from "../../global-views/splash-screen/splash-screen";
 import { getMessagesBetweenUsers, Message } from "../../utils/server-services/messages-server.service";
 import { GestureHandler } from "../../utils/gesture-handler";
 import { ChatContacts } from "../../contacts-view/chat-contacts";
-import { MobileMediaQuery } from "../../utils/utils";
+import { MobileMediaQuery, ShortDateFormatter, ShortTimeFormatter } from "../../utils/utils";
 
 const ChatMessagesListRef = document.getElementById("chat-ui");
 const Trash = document.getElementById("chat-ui");
@@ -12,8 +12,6 @@ const Trash = document.getElementById("chat-ui");
 export const MessageLists: {[key: string]: Message[]} = {};
 export const UnreadMessages: {[key: string]: Message[]} = {};
 
-const ShortTimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' });
-const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'});
 let dateMarks: { [key: string]: boolean } = {};
 
 export const ChatMessagesList = (() => {

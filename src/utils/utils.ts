@@ -1,3 +1,6 @@
+export const ShortTimeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' });
+export const ShortDateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'});
+
 export class MediaQueryListener {
 
   matches: boolean = false;

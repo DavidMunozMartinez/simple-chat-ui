@@ -6,7 +6,12 @@ import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
 import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
 import { GestureHandler } from "../utils/gesture-handler";
-import { MobileMediaQuery } from "../utils/utils";
+import { MobileMediaQuery, ShortDateFormatter } from "../utils/utils";
+import { Message } from "../utils/server-services/messages-server.service";
+
+type Contact = AppUser & {
+  lastMessage?: Message
+}
 
 export const ChatContacts = (() => {
   const ChatContactsRef = document.getElementById('chat-contacts');
@@ -18,9 +23,10 @@ export const ChatContacts = (() => {
       friendRequest,
       acceptRequest,
       selectChat,
+      updateLastMessage,
       activeChat: '',
       searchTerm: '',
-      contacts: [] as AppUser[],
+      contacts: [] as Contact[],
       receivedRequests: [] as AppUser[],
       sentRequests: [] as string[],
       searchResults: [] as AppUser[],
@@ -95,7 +101,8 @@ export const ChatContacts = (() => {
     getUserContacts(user).then((contactData: UserContactsData) => {
       if (contactData.contacts) {
         let contacts = contactData.contacts;
-        bind.contacts = contacts as any;
+        bind.contacts = contacts;
+        formatLastMessageDates();
         if (autoSelectChat) {
           let lastChatSelected = localStorage.getItem('last-chat-selected');
           let selectedContact = contacts.find((contact: any) => contact._id === lastChatSelected)
@@ -120,6 +127,7 @@ export const ChatContacts = (() => {
       bind.activeChat = contact._id;
       ChatMessagesList.loadMessages(contact._id);
       ChatHeader.activeChatName = contact.name ? contact.name : contact.email;
+      bind.activeChat = contact._id;
       localStorage.setItem('last-chat-selected', contact._id);
     }
     closeContacts();
@@ -158,6 +166,40 @@ export const ChatContacts = (() => {
       ChatContacts.left = '-100%';
       ChatContacts.transform = `translateX(0)`;
     }, animationTime);
+  }
+
+  function updateLastMessage(message: Message) {
+    let contact = bind.contacts.find(contact => contact._id === message.from || contact._id === message.to)
+    if (contact) {
+      contact.lastMessage = message;
+      contact.lastMessage.prettyDate = ShortDateFormatter.format(new Date(message.createdAt));
+    }
+    bind.contacts.sort((a, b) => {
+      if (a.lastMessage && b .lastMessage) {
+        let firstDate = a.lastMessage.createdAt
+        let secondDate = b.lastMessage.createdAt
+        return new Date(secondDate).getTime() - new Date(firstDate).getTime()
+      }
+      return 0
+    });
+  }
+
+  function formatLastMessageDates() {
+
+    bind.contacts.sort((a, b) => {
+      if (a.lastMessage && b .lastMessage) {
+        let firstDate = a.lastMessage.createdAt
+        let secondDate = b.lastMessage.createdAt
+        return new Date(secondDate).getTime() - new Date(firstDate).getTime()
+      }
+      return 0
+    });
+
+    bind.contacts.forEach((contact) => {
+      if (contact.lastMessage) {
+        contact.lastMessage.prettyDate = ShortDateFormatter.format(new Date(contact.lastMessage.createdAt))
+      }
+    });
   }
 
   return bind;

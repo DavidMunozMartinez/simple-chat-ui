@@ -56,4 +56,5 @@ export type Message = {
   to: string,
   message: string,
   createdAt: Date,
+  prettyDate?: string
 }
