@@ -4,7 +4,7 @@
   "short_name": "Chat",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#FFFFFF",
+  "background_color": "#222222",
   "categories": ["social"],
   "icons": [
     {
