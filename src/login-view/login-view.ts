@@ -9,7 +9,7 @@ import { AppUser, getUserId, updateUserToken } from "../utils/server-services/us
 import { initWebSockets } from "../utils/ws-handler";
 import { AppModal } from "../global-views/app-modal/app-modal";
 import { serverSignIn } from "../utils/server-services/server-handler";
-import { messaging, unsubscribe } from "../utils/firebase-service";
+import { messaging } from "../utils/firebase-service";
 import { getToken } from "firebase/messaging";
 
 export const LoginBind = (() => {
@@ -34,6 +34,7 @@ export const LoginBind = (() => {
       logout,
     },
     ready: () => {
+      // unsubscribe();
       supabase.auth.getUser()
         .then((value: UserResponse) => {
           if (value.data && value.data.user && value.data.user.id) {
@@ -107,7 +108,7 @@ export const LoginBind = (() => {
 
   function logout () {
     return supabase.auth.signOut().then(() => {
-      unsubscribe();
+      // unsubscribe();
       location.reload();
     });
   }
