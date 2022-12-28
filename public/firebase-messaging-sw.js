@@ -26,7 +26,7 @@ messaging.onBackgroundMessage((payload) => {
       // image: notification.image,
       timestamp: Date.now(),
       tag: payload.data.tag,
-      renotify: true,
+      // renotify: true,
     };
   
     self.registration.showNotification(notificationTitle,

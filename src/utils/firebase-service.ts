@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, MessagePayload, NotificationPayload, onMessage, Unsubscribe } from "firebase/messaging";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,13 +15,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
-// export const unsubscribe: Unsubscribe = onMessage(messaging, (data: MessagePayload) => {
-//   if (data.notification) {
-//     const notification: NotificationPayload = data.notification;
-//     new Notification(notification.title || 'Untitled', {
-//       body: notification.body,
-//       icon: notification.icon,
-//       image: notification.image
-//     });
-//   }
-// });
+export const unsubscribe: Unsubscribe = onMessage(messaging, (data: MessagePayload) => {
+  // if (data.notification) {
+  //   const notification: NotificationPayload = data.notification;
+  //   new Notification(notification.title || 'Untitled', {
+  //     body: notification.body,
+  //     icon: notification.icon,
+  //     tag: data.data ? data.data.tag : '',
+  //     // renotify: true,
+  //   });
+  // }
+});

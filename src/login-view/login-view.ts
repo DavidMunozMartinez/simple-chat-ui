@@ -34,7 +34,6 @@ export const LoginBind = (() => {
       logout,
     },
     ready: () => {
-      // unsubscribe();
       supabase.auth.getUser()
         .then((value: UserResponse) => {
           if (value.data && value.data.user && value.data.user.id) {
