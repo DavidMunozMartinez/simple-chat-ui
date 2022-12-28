@@ -6,7 +6,7 @@ import { SplashScreen } from "../global-views/splash-screen/splash-screen";
 import { DefaultResponse, queryGlobalContacts } from "../utils/server-services/server-handler";
 import { acceptFriendRequest, AppUser, getUserContacts, sendFriendRequest, UserContactsData } from "../utils/server-services/user-server.service";
 import { GestureHandler } from "../utils/gesture-handler";
-import { MobileMediaQuery, prettyDate, ShortDateFormatter } from "../utils/utils";
+import { MobileMediaQuery, prettyDate } from "../utils/utils";
 import { Message } from "../utils/server-services/messages-server.service";
 
 type Contact = AppUser & {
