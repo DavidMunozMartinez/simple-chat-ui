@@ -24,6 +24,7 @@ messaging.onBackgroundMessage((payload) => {
       body: notification.body,
       icon: 'https://simple-chat-ui.vercel.app/icon-x120.png',
       // image: notification.image,
+      timestamp: Date.now(),
       tag: payload.data.tag,
       renotify: true,
     };
