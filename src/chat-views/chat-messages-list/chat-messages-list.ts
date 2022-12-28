@@ -100,6 +100,9 @@ export const ChatMessagesList = (() => {
       const Gestures = new GestureHandler(ChatMessagesListRef);
       Gestures.on('drag-start', () => {
         ChatContacts.transition = 'none';
+        if (document.activeElement) {
+          (document.activeElement as HTMLElement).blur();
+        }
       });
       Gestures.on('drag-horizontal', (distance) => {
         ChatContacts.transform = `translateX(${distance.x}px)`;

@@ -139,6 +139,9 @@ export const ChatContacts = (() => {
       const Gestures = new GestureHandler(ChatContactsRef);
       Gestures.on('drag-start', () => {
         bind.transition = 'none';
+        if (document.activeElement) {
+          (document.activeElement as HTMLElement).blur();
+        }
       });
       Gestures.on('drag-horizontal', (distance) => {
         if (distance.x < 0) {
