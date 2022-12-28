@@ -42,7 +42,7 @@
       border: 1px solid black;
       padding: 8px 26px;
       background-color: #444444;
-      div {
+      div > form {
         display: flex;
         flex-direction: column;
         justify-content: center;

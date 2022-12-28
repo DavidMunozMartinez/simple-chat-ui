@@ -16,13 +16,13 @@ const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
 export const unsubscribe: Unsubscribe = onMessage(messaging, (data: MessagePayload) => {
-  // if (data.notification) {
-  //   const notification: NotificationPayload = data.notification;
-  //   new Notification(notification.title || 'Untitled', {
-  //     body: notification.body,
-  //     icon: notification.icon,
-  //     tag: data.data ? data.data.tag : '',
-  //     // renotify: true,
-  //   });
-  // }
+  if (data.notification) {
+    const notification: NotificationPayload = data.notification;
+    new Notification(notification.title || 'Untitled', {
+      body: notification.body,
+      icon: notification.icon,
+      tag: data.data ? data.data.tag : '',
+      // renotify: true,
+    });
+  }
 });
