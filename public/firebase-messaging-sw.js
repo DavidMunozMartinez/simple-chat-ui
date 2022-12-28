@@ -22,8 +22,8 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = notification.title || 'Untitled';
     const notificationOptions = {
       body: notification.body,
-      icon: notification.icon,
-      image: notification.image,
+      icon: 'https://simple-chat-ui.vercel.app/icon-x120.png',
+      // image: notification.image,
       tag: payload.data.tag
     };
   
@@ -32,23 +32,23 @@ messaging.onBackgroundMessage((payload) => {
   }
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', (event) => {
   let url = 'https://simple-chat-ui.vercel.app/';
   event.notification.close(); // Android needs explicit close.
   event.waitUntil(
-      clients.matchAll({type: 'window'}).then( windowClients => {
-          // Check if there is already a window/tab open with the target URL
-          for (var i = 0; i < windowClients.length; i++) {
-              var client = windowClients[i];
-              // If so, just focus it.
-              if (client.url === url && 'focus' in client) {
-                  return client.focus();
-              }
-          }
-          // If not, then open the target URL in a new window/tab.
-          if (clients.openWindow) {
-              return clients.openWindow(url);
-          }
-      })
+    clients.matchAll({type: 'window'}).then( windowClients => {
+      // Check if there is already a window/tab open with the target URL
+      for (var i = 0; i < windowClients.length; i++) {
+        var client = windowClients[i];
+        // If so, just focus it.
+        if (client.url === url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // If not, then open the target URL in a new window/tab.
+      if (clients.openWindow) {
+        return clients.openWindow(url);
+      }
+    })
   );
 });
