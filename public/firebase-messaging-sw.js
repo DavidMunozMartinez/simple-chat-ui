@@ -24,7 +24,8 @@ messaging.onBackgroundMessage((payload) => {
       body: notification.body,
       icon: 'https://simple-chat-ui.vercel.app/icon-x120.png',
       // image: notification.image,
-      tag: payload.data.tag
+      tag: payload.data.tag,
+      renotify: true,
     };
   
     self.registration.showNotification(notificationTitle,
