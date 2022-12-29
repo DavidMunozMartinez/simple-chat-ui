@@ -18,13 +18,11 @@ export const ChatInput = (() => {
   });
 
   function onInputKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key.toLowerCase() === 'enter') {
       submitMessage();
     }
     // iOS thing
-    if (!MessageInput.innerText.trim()) {
-      MessageInput.innerText = '';
-    }
+    if (!MessageInput.innerText.trim()) MessageInput.innerHTML = '';
   }
 
   function submitMessage() {
