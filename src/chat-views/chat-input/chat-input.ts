@@ -20,6 +20,7 @@ export const ChatInput = (() => {
   function onInputKeydown(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
       submitMessage();
+      event.preventDefault();
     }
     // iOS thing
     if (!MessageInput.innerText.trim()) MessageInput.innerHTML = '';
