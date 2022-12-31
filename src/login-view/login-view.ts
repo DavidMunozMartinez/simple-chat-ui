@@ -14,7 +14,6 @@ import { getToken } from "firebase/messaging";
 
 export const LoginBind = (() => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  // const observer = new Obs
   const { bind } = new Bind({
     id: 'login-view',
     bind: {
