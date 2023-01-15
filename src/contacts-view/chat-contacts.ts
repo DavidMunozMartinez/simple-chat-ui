@@ -200,7 +200,12 @@ export const ChatContacts = (() => {
 
     bind.contacts.forEach((contact) => {
       if (contact.lastMessage) {
-        contact.lastMessage.prettyDate = prettyDate(new Date(contact.lastMessage.createdAt))
+        let date = new Date(contact.lastMessage.createdAt);
+        if (date.getTime() === 628408800000) {
+          contact.lastMessage.prettyDate = ''
+        } else {
+          contact.lastMessage.prettyDate = prettyDate(new Date(contact.lastMessage.createdAt))
+        }
       }
     });
   }

@@ -1,7 +1,7 @@
 import { Bind } from "bindrjs";
 import { ChatHeader } from "../chat-header/chat-header";
 import { SplashScreen } from "../../global-views/splash-screen/splash-screen";
-import { getMessagesBetweenUsers, Message } from "../../utils/server-services/messages-server.service";
+import { getMessagesBetweenUsers, loadMoreMessages, Message } from "../../utils/server-services/messages-server.service";
 import { GestureHandler } from "../../utils/gesture-handler";
 import { ChatContacts } from "../../contacts-view/chat-contacts";
 import { MobileMediaQuery, ShortDateFormatter, ShortTimeFormatter } from "../../utils/utils";
@@ -53,6 +53,7 @@ export const ChatMessagesList = (() => {
     dateMarks = {};
     if (!MessageLists[you]) {
       getMessagesBetweenUsers(ChatHeader._id, you).then((messages: Message[]) => {
+        messages.reverse()
         if (UnreadMessages[you] && UnreadMessages[you].length) {
           MessageLists[you] = messages.concat(UnreadMessages[you] as any || []);
           UnreadMessages[you] = [];
@@ -77,6 +78,13 @@ export const ChatMessagesList = (() => {
     }
   }
 
+  function loadMore() {
+    const earliestMessage = MessageLists[ChatContacts.activeChat][0];
+    loadMoreMessages(ChatHeader._id, ChatContacts.activeChat, earliestMessage._id).then((olderMessages) => {
+      console.log(olderMessages)
+    });
+  }
+
   /**
    * Executed only when the app is focused again, we lost ws connection and need to
    * retrieve missing messages while the tab was closed/minimized etc
@@ -86,6 +94,7 @@ export const ChatMessagesList = (() => {
     reloadContacts.forEach((contactId) => {
       let lastMessageId = MessageLists[contactId][MessageLists[contactId].length - 1]._id;
       getMessagesBetweenUsers(ChatHeader._id, contactId, lastMessageId).then((newMessages) => {
+        newMessages.reverse()
         MessageLists[contactId] = MessageLists[contactId].concat(newMessages);
         newMessages.forEach((message: any) => {
           appendMessage(message.message, new Date(message.createdAt), contactId);
